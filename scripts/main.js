@@ -82,11 +82,17 @@ function init() {
 function makeFlamableHandler(flamable) {
     return function(evt){
 	if(clickMode == "removeTree") {
-	    removeFlamable(flamable);
+	   removeTree(flamable);
 	} else if (clickMode == "addFire") {
 	    flamable.burning += 100;
 	}
     }
+}
+
+function removeTree(flamable) {
+	if (decreaseFunds(cutTreeCost)) {
+		 removeFlamable(flamable);
+	}
 }
 
 function removeFlamable(flamable){
