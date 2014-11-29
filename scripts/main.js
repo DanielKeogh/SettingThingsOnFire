@@ -28,16 +28,16 @@ var clickMode = "dropFireMan";
 
 // Rendering
 
-function addHouse(x, y, width, height) {
+function addHouse(housebase) {
     var house = new createjs.Shape();
-    house.graphics.beginFill("blue").drawRect(0, 0, mapInit[i].width, mapInit[i].height);
+    house.graphics.beginFill("blue").drawRect(0, 0, housebase.width, housebase.height);
 
     house.type = "house";
-    house.x = x;
-    house.y = y;
+    house.x = housebase.x;
+    house.y = housebase.y;
 
-    house.width = width;
-    house.height = height;
+    house.width = housebase.width;
+    house.height = housebase.height;
 
     house.burning = 0;
     house.health = 100;
@@ -131,7 +131,7 @@ function handleStageClick(evt) {
     {
 	var randomHouseWidth = Math.round(Math.random() * 5 + 5) * 10;
 	var randomHouseHeight = Math.round(Math.random() * 5 + 5) * 10;
-	addHouse({})
+	addHouse({x: x, y: y, width: randomHouseWidth, height: randomHouseHeight});
     }
     else if(clickMode == "getMap")
     {
