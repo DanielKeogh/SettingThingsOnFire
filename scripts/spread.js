@@ -1,5 +1,5 @@
 // Difficulty configuration
-var surroundingPenalty = 6;
+var surroundingPenalty = 0.05;
 var zone0Burn = 5;
 var zone1Burn = 3;
 var zone2Burn = 1;
@@ -56,6 +56,8 @@ function burnSurrounding(burner, elements, wind, delta)
     for(var i = 0; i < elements.length; ++ i)
     {
 	var element = elements[i];
+	if(element == burner) continue;
+
 	var zone = determineZone(burner, elements[i], wind);
 	switch(zone)
 	{
@@ -80,7 +82,7 @@ function burnSurrounding(burner, elements, wind, delta)
 	
 	if(isInSurrounding(burner, element))
 	{
-	    element.burning += delta * 50;
+	    element.burning += delta * surroundingPenalty;
 	}
     }
 }

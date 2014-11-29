@@ -4,7 +4,7 @@
 
 // Map Setup.
 
-var wind = {type: "wind", speed: 3, direction: 270};
+var wind = {type: "wind", speed: 25, direction: 270};
 
 var fireManSize = 5;
 
@@ -101,7 +101,8 @@ function addHouse(housebase) {
     house.height = housebase.height;
 
     house.burning = 0;
-    house.health = 100;
+    house.startingHealth = 500;
+    house.health = 500;
     
     house.addEventListener("click", function(evt) {
 	if(clickMode == "removeTree") {
@@ -123,7 +124,8 @@ function addTree(treebase) {
     tree.type = "tree";
     
     tree.burning = 0;
-    tree.health = 100;
+    tree.startingHealth = 500;
+    tree.health = 500;
 
     var circle = new createjs.Shape();
     circle.graphics.beginFill("green").drawCircle(0, 0, tree.radius);
@@ -215,11 +217,11 @@ function handleStageClick(evt) {
 function updateGraphics(flamable) {
     if(flamable.type == "tree") {
 	var circle = flamable.getChildAt(0);
-	var treeSize = flamable.radius - (1 - (flamable.health / 100)) * flamable.radius;
+	var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
 	circle.graphics.clear();
 	
 	var treeColour = "green";
-	if(flamable.burning == 100) {
+	if(flamable.burning > 99) {
 	    treeColour = "red";
 	}
 
