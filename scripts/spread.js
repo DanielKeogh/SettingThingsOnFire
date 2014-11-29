@@ -3,7 +3,6 @@ var surroundingPenalty = 6;
 var zone0Burn = 5;
 var zone1Burn = 3;
 var zone2Burn = 1;
-var decayRate = 10;
 var burnHalfWidth = 30;
 
 function getDistance(point0, point1)
