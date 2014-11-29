@@ -1,9 +1,10 @@
 // Difficulty configuration
-var surroundingPenalty = 0.020;
-var zone0Burn = 0.015;
-var zone1Burn = 0.012;
-var zone2Burn = 0.010;
-var burnHalfWidth = 30;
+var surroundingPenalty = 0.006;
+var zone0Burn = 0.005;
+var zone1Burn = 0.003;
+var zone2Burn = 0.002;
+var radiusFactor = 3;
+var burnHalfWidth = 15;
 
 function getDistance(point0, point1)
 {
@@ -15,7 +16,7 @@ function isInSurrounding(burner, element)
 {
   // Determine the distance between the burner and the burnee. If it's too close it'll burn
   var distance = getDistance(burner, element);
-  return distance < burner.radius * 5;
+  return distance < burner.radius * radiusFactor;
 }
 
 // Determine what'll be the damage done to the element being burnt
