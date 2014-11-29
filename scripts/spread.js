@@ -1,8 +1,8 @@
 // Difficulty configuration
-var surroundingPenalty = 0.05;
-var zone0Burn = 200;
-var zone1Burn = 200;
-var zone2Burn = 200;
+var surroundingPenalty = 0.020;
+var zone0Burn = 0.015;
+var zone1Burn = 0.012;
+var zone2Burn = 0.010;
 var burnHalfWidth = 30;
 
 function getDistance(point0, point1)
@@ -27,12 +27,12 @@ function determineZone(burner, element, wind)
   var zone2Limit = wind.speed;
 
   // Determine the distance between the burner and the burnee.
-  var distance = Math.sqrt((element.x - burner.x)^2 + (element.y - burner.y)^2);
+  var distance = getDistance(burner, element);
 
   // Calculate the angle the point has w.r.t. the reference
-  var pointsAngle = Math.acos((element.x - burner.x) / distance);
+  var pointsAngle = Math.acos((element.x - burner.x) / distance) * 360 / (2 * Math.PI);
 
-  if(pointsAngle - (wind.angle - burnHalfWidth) < wind.angle + burnHalfWidth &&
+  if(pointsAngle - (wind.direction - burnHalfWidth) < wind.direction + burnHalfWidth &&
      distance < zone2Limit)
   {
     // The tree is inside the burning zone
@@ -53,38 +53,35 @@ function determineZone(burner, element, wind)
 // Performs the burning of the trees in the vicinity of a burning tree
 function burnSurrounding(burner, elements, wind, delta)
 {
-    for(var i = 0; i < elements.length; ++ i)
-    {
-	var element = elements[i];
-	if(element == burner) continue;
+  for(var i = 0; i < elements.length; ++ i)
+  {
+    var element = elements[i];
+    if(element == burner) continue;
 
-	var zone = determineZone(burner, elements[i], wind);
-	switch(zone)
-	{
-	    case -1:
-            break;
-	    
-	    case 0:
-            element.burning += zone0Burn * delta;
-            break;
-	    
-	    case 1:
-            element.burning += zone1Burn * delta;
-            break;
-	    
-	    case 2:
-            element.burning += zone2Burn * delta;
-            break;
-	    
-	    default:
-            break;
-	}
-	
-	if(isInSurrounding(burner, element))
-	{
-	    element.burning += delta * surroundingPenalty;
-	}
+    var zone = determineZone(burner, elements[i], wind);
+
+    switch(zone)
+    {
+      case -1:
+        break;
+      case 0:
+        element.burning += zone0Burn * delta;
+        break;
+      case 1:
+        element.burning += zone1Burn * delta;
+        break;
+      case 2:
+        element.burning += zone2Burn * delta;
+        break;
+      default:
+        break;
     }
+ 
+    if(isInSurrounding(burner, element))
+    {
+      element.burning += delta * surroundingPenalty;
+    }
+  }
 }
 
 // Performs the spreading of the fire when a whole bunch of trees are burning
