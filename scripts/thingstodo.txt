@@ -12,3 +12,12 @@ things to do
   && Player.funds >= 0
   
 - Round Number on screen
+- Map gen randomises wind
+- Borders / background on button
+- Map generator smarter
+- Fix flames on tree
+- Adjust balancing of waterbombs etc
+- More starting fires - difficulty
+- Grouping of starting fires
+- Roads
+- Improve houses
