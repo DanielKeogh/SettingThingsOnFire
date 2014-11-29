@@ -238,9 +238,19 @@ function updateGraphics(flamable) {
 		if(flamable.burning > 99) {
 			houseColour = "brown";
 		}
-
+		if(flamable.health < 20) {
+			houseColour = "black";
+		}
+		
 		rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
 	}	
+}
+
+function rgb(r, g, b){
+	r = Math.floor(r);
+	g = Math.floor(g);
+	b = Math.floor(b);
+	return ["rgb(",r,",",g,",",b,")"].join("");
 }
 
 
