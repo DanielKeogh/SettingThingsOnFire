@@ -4,7 +4,7 @@
 
 // Map Setup.
 
-var wind = {type: "wind", speed: 600, direction: 90};
+var wind = {type: "wind", speed: 30, direction: 90};
 
 var fireManSize = 5;
 
@@ -22,18 +22,35 @@ var firemen = [];
 
 var clickMode = "dropFireMan";
 
+var particleImage;
+
+var funds = 5000;
+
+function loadAssets() {
+    particleImage = new Image();
+    particleImage.onload = initCanvas;
+    particleImage.src = "images/particle_base.png";
+}
+
 function init() {
     var canvas = document.getElementById("fireCanvas");
-	
+    
+    //Menu goes here:
+    
     stage = new createjs.Stage(canvas);
     
+<<<<<<< HEAD
     mapInit = map6;
 
+=======
+    mapInit = map2;
+    
+>>>>>>> origin/master
     // Add background
     var background = new createjs.Shape();
     background.x = 0;
     background.y = 0;
-    background.graphics.beginFill("yellow").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+    background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
     stage.addChild(background);
     
     // Setup controls
@@ -89,21 +106,28 @@ function removeFlamable(flamable){
     console.log("Removing " + flamable.type);
 }
 
+function addFlamable(base){
+    var container = new createjs.Container();
+    container.x = base.x;
+    container.y = base.y;
+    
+    container.burning = 0;
+    container.startingHealth = 500;
+    container.health = 500;
+    container.emitter = null;
+
+    return container;
+}
+
 function addHouse(housebase) {
-	var house = new createjs.Container();
-    var rectangle = new createjs.Shape();
-    rectangle.graphics.beginFill("blue").drawRect(0, 0, housebase.width, housebase.height);
+    var house = addFlamable(housebase);
 
     house.type = "house";
-    house.x = housebase.x;
-    house.y = housebase.y;
-
     house.width = housebase.width;
     house.height = housebase.height;
-
-    house.burning = 0;
-    house.startingHealth = 500;
-    house.health = 500;
+    
+    var rectangle = new createjs.Shape();
+    rectangle.graphics.beginFill("blue").drawRect(0, 0, housebase.width, housebase.height);
     
     house.addEventListener("click", function(evt) {
 	if(clickMode == "removeTree") {
@@ -111,24 +135,17 @@ function addHouse(housebase) {
 	}
     });
 	
-	house.addChild(rectangle);
-   
+    house.addChild(rectangle);
+    
     stage.addChild(house);
     flamables[flamables.length] = house;
 }
 
 function addTree(treebase) {
-    var tree = new createjs.Container();
-    
-    tree.x = treebase.x;
-    tree.y = treebase.y;
+    var tree = addFlamable(treebase);
     
     tree.radius = treebase.radius;
     tree.type = "tree";
-    
-    tree.burning = 0;
-    tree.startingHealth = 500;
-    tree.health = 500;
 
     var circle = new createjs.Shape();
     circle.graphics.beginFill("green").drawCircle(0, 0, tree.radius);
@@ -246,6 +263,43 @@ function updateGraphics(flamable) {
 	}	
 }
 
+function makeParticleEmitter(x, y) {
+    emitter = new createjs.ParticleEmitter(particleImage);
+    emitter.position = new createjs.Point(x, y);
+    emitter.emitterType = createjs.ParticleEmitterType.Emit;
+    emitter.emissionRate = 45;
+    emitter.maxParticles = 60;
+    emitter.life = 100;
+    emitter.lifeVar = 2000;
+    emitter.speed = wind.speed;
+    emitter.speedVar = 0;
+    emitter.positionVarX = 2;
+    emitter.positionVarY = 0;
+    emitter.accelerationX = 0;
+    emitter.accelerationY = 0;
+    emitter.radialAcceleration = 0;
+    emitter.radialAccelerationVar = 0;
+    emitter.tangentalAcceleration = 0;
+    emitter.tangentalAccelerationVar = 0;
+    emitter.angle = wind.direction;
+    emitter.angleVar = 70;
+    emitter.startSpin = 0;
+    emitter.startSpinVar = 0;
+    emitter.endSpin = null;
+    emitter.endSpinVar = null;
+    emitter.startColor = [255, 200, 0];
+    emitter.startColorVar = [0, 0, 0];
+    emitter.startOpacity = 1;
+    emitter.endColor = [255, 0, 0];
+    emitter.endColorVar = null;
+    emitter.endOpacity = 0;
+    emitter.startSize = 10;
+    emitter.startSizeVar = 0;
+    emitter.endSize = 20;
+    emitter.endSizeVar = null;
+    return emitter;
+}
+
 function rgb(r, g, b){
 	r = Math.floor(r);
 	g = Math.floor(g);
@@ -253,11 +307,23 @@ function rgb(r, g, b){
 	return ["rgb(",r,",",g,",",b,")"].join("");
 }
 
-
 // Game Loop
+
+var cachedEmitter;
 
 function updateBurning(flamable) {
     if (flamable.burning > 99) {
+	if(cachedEmitter == null)
+	{
+	    cachedEmitter = makeParticleEmitter(0, 0);
+	}
+	
+	if(flamable.emitter == null)
+	{
+	    flamable.addChild(cachedEmitter);
+	    flamable.emitter = cachedEmitter;
+	}
+	
 	flamable.health -= flamable.burning / 100; // Consider, using log to suppress fire.
     }
 }
@@ -265,6 +331,11 @@ function updateBurning(flamable) {
 function considerDying(flamable) {
     if(flamable.health < 0) {
 	removeFlamable(flamable);
+	
+	if(flamable.type == "house")
+	{
+	    funds -= 1000;
+	}
     }
 }
 
