@@ -25,7 +25,7 @@ function init() {
 
 	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
   housesAlive = difficulty.houseNumber;
-  burningTrees = difficulty.startingBurningTrees;
+  burningTrees = difficulty.startingFireCount;
 
 	// Add background
 	stage.addChild(createBackground());
@@ -73,6 +73,7 @@ function init() {
 
 	createjs.Ticker.on("tick", tick);
 	createjs.Ticker.setFPS(fps);
+  createjs.Ticker.setPaused(false);
 }
 
 function createBackground() {
@@ -393,6 +394,11 @@ function considerDying(flamable) {
 }
 
 function tick(event) {
+  if(event.paused)
+  {
+    return;
+  }
+
   if(housesAlive == 0 || burningTrees == 0)
   {
     endOfRound();

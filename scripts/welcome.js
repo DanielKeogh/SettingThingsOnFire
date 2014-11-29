@@ -20,6 +20,7 @@ function welcome()
 
   playButton.on("click", function(evt){
     createjs.Ticker.off("tick", welcomeTick);
+    createjs.Ticker.setPaused(true);
     stage.clear();
     init();
   });
@@ -54,4 +55,5 @@ function welcome()
   stage.update();
   createjs.Ticker.setFPS(30);
   createjs.Ticker.on("tick", welcomeTick);
+  createjs.Ticker.setPaused(false);
 }
