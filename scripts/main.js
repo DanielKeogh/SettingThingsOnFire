@@ -233,7 +233,7 @@ function considerDying(flamable) {
 }
 
 function tick(event) {
-//    spreadFire(mapInit, wind, event);
+    spreadFire(flamables, wind, event);
     
     for(i = 0; i < flamables.length; i++) {
 	var flamable = flamables[i];
