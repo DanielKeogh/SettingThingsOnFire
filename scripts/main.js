@@ -14,6 +14,7 @@ var firemen = [];
 var clickMode = "noEvent";
 var particleImage;
 var fundText;
+var roundText;
 
 function loadAssets() {
 	particleImage = new Image();
@@ -31,7 +32,6 @@ function init() {
 	stage.addChild(createBackground());
 
 	// Setup controls
-
 	addModeButton("dropFireMan", "Firemen", 0, 0);
 	addModeButton("dropWater", "Water Bomb", 110, 0);
 	addModeButton("removeTree", "Chop Tree", 220, 0);
@@ -39,13 +39,18 @@ function init() {
 	addModeButton("addHouse", "Add House", 440, 0);
 	addModeButton("addFire", "Burn Things", 550, 0);
 	addModeButton("getMap", "Get Map", 660, 0);
-	//addModeButton("tonyAbbot", "Prime Minister", 600, 0);
 
 	fundText = new createjs.Text("Funds: " + difficulty.funds, "bold 15px Arial", "yellow");
 	fundText.x = 5;
 	fundText.y = stage.canvas.height - 15;
 
 	stage.addChild(fundText);
+  
+  roundText = new createjs.Text("Round: " + player.roundNumber, "bold 15px Arial", "yellow");
+	roundText.x = fundText.x + 110;
+	roundText.y = stage.canvas.height - 15;
+
+	stage.addChild(roundText);
 
 	// Add objects
 	for (i = 0; i < mapInit.length; i++) {

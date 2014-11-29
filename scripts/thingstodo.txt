@@ -11,7 +11,7 @@ things to do
   && Ignition count == 0
   && Player.funds >= 0
   
-AE- Round Number on screen
+//- Round Number on screen
 - Map gen randomises wind speed
 AE- Map gen randomises wind direction
 - Borders / background on button
