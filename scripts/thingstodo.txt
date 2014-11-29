@@ -1,0 +1,23 @@
+things to do
+
+- End of round conditions
+  || Houses Alive == 0
+  || Ignition count == 0 
+- Lose conditions
+  || House Alive == 0
+  || Player.funds < 0 && Ignition count == 0 
+- Progress To next round
+  && Houses Alive > 0
+  && Ignition count == 0
+  && Player.funds >= 0
+  
+- Round Number on screen
+- Map gen randomises wind
+- Borders / background on button
+- Map generator smarter
+- Fix flames on tree
+- Adjust balancing of waterbombs etc
+- More starting fires - difficulty
+- Grouping of starting fires
+- Roads
+- Improve houses
