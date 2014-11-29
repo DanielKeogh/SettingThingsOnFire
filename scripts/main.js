@@ -37,8 +37,8 @@ function init() {
     
     stage = new createjs.Stage(canvas);
     
-    mapInit = map6;
-	
+    mapInit = generateMap(4, 300, canvas.width, canvas.height);
+    
     // Add background
     var background = new createjs.Shape();
     background.x = 0;
