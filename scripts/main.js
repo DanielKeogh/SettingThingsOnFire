@@ -7,6 +7,7 @@
 var wind = {type: "wind", speed: 90, direction: 270};
 
 var fireManSize = 5;
+var fireManRange = 20;
 
 var mapInit = [
     //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
@@ -190,14 +191,31 @@ function addModeButton(modeName, name, x, y) {
 
 function handleDropFireMan(x, y) {
 	if (decreaseFunds(fireManCost)) {
+		var container = new createjs.Container();
 		var fireman = new createjs.Shape();
 		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
 		fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize/2);
-		fireman.x = x;
-		fireman.y = y;
+		container.addEventListener("rollover", firemanHoverHandleEvt);
+		container.addEventListener("rollout", firemanHoverHandleEvt);
+		container.x = x;
+		container.y = y;
+		container.addChild(fireman);
 		
-		firemen[firemen.length] = fireman;
-		stage.addChild(fireman);
+		firemen[firemen.length] = container;
+		stage.addChild(container);
+	}
+}
+
+function firemanHoverHandleEvt(evt) {
+	var container = evt.target;
+	if (evt.type == "rollover") {
+		var arcShape = new createjs.Shape();
+		arcShape.beginStroke("blue");
+		arcShape.graphics.arc(container.x, container.y, fireManRange, 0, Math.PI*2);
+		container.addChild(arcShape);
+	}
+	else if (evt.type == "rollout") {
+		container.removeChildAt(1);
 	}
 }
 
