@@ -1,0 +1,447 @@
+// Easy: Houses bottom in a line with some trees
+var map1 = [{
+    type: "house",
+    x: 616,
+    y: 427,
+    width: 70,
+    height: 80,
+    health: 100,
+    burning: 0
+}, {
+    type: "house",
+    x: 414,
+    y: 431,
+    width: 90,
+    height: 60,
+    health: 100,
+    burning: 0
+}, {
+    type: "house",
+    x: 243,
+    y: 451,
+    width: 80,
+    height: 70,
+    health: 100,
+    burning: 0
+}, {
+    type: "house",
+    x: 68,
+    y: 443,
+    width: 80,
+    height: 90,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 730,
+    y: 126,
+    radius: 20,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 663,
+    y: 231,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 658,
+    y: 363,
+    radius: 15,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 526,
+    y: 333,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 530,
+    y: 248,
+    radius: 16,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 553,
+    y: 192,
+    radius: 20,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 593,
+    y: 160,
+    radius: 12,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 465,
+    y: 148,
+    radius: 17,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 450,
+    y: 316,
+    radius: 7,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 402,
+    y: 377,
+    radius: 11,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 474,
+    y: 390,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 526,
+    y: 403,
+    radius: 15,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 551,
+    y: 432,
+    radius: 10,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 562,
+    y: 466,
+    radius: 8,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 769,
+    y: 405,
+    radius: 10,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 690,
+    y: 346,
+    radius: 8,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 716,
+    y: 305,
+    radius: 16,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 732,
+    y: 229,
+    radius: 15,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 726,
+    y: 190,
+    radius: 12,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 629,
+    y: 113,
+    radius: 9,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 382,
+    y: 406,
+    radius: 14,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 330,
+    y: 423,
+    radius: 15,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 286,
+    y: 423,
+    radius: 8,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 235,
+    y: 397,
+    radius: 19,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 135,
+    y: 420,
+    radius: 8,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 80,
+    y: 398,
+    radius: 15,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 80,
+    y: 397,
+    radius: 20,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 199,
+    y: 502,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 188,
+    y: 451,
+    radius: 19,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 357,
+    y: 487,
+    radius: 7,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 378,
+    y: 444,
+    radius: 17,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 65,
+    y: 296,
+    radius: 9,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 32,
+    y: 201,
+    radius: 15,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 51,
+    y: 112,
+    radius: 7,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 79,
+    y: 66,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 178,
+    y: 363,
+    radius: 14,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 170,
+    y: 281,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 156,
+    y: 236,
+    radius: 11,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 149,
+    y: 157,
+    radius: 11,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 188,
+    y: 105,
+    radius: 12,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 263,
+    y: 100,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 343,
+    y: 295,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 254,
+    y: 281,
+    radius: 10,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 236,
+    y: 185,
+    radius: 15,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 371,
+    y: 209,
+    radius: 7,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 435,
+    y: 259,
+    radius: 8,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 619,
+    y: 316,
+    radius: 19,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 610,
+    y: 388,
+    radius: 19,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 336,
+    y: 352,
+    radius: 12,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 282,
+    y: 331,
+    radius: 18,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 332,
+    y: 119,
+    radius: 12,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 504,
+    y: 62,
+    radius: 18,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 742,
+    y: 56,
+    radius: 13,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 733,
+    y: 499,
+    radius: 12,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 716,
+    y: 415,
+    radius: 12,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 747,
+    y: 341,
+    radius: 10,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 784,
+    y: 267,
+    radius: 10,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 317,
+    y: 199,
+    radius: 8,
+    health: 100,
+    burning: 0
+}, {
+    type: "tree",
+    x: 439,
+    y: 196,
+    radius: 12,
+    health: 100,
+    burning: 0
+}, ];

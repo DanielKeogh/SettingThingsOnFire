@@ -9,11 +9,11 @@ var wind = {type: "wind", speed: 3, direction: 270};
 var fireManSize = 5;
 
 var mapInit = [
-    {type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
-    {type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
-    {type: "tony"}
- ];
-
+    //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
+    //{type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
+    //{type: "tony"}
+];
+ 
 var stage;
 
 var flamables = [];
@@ -22,11 +22,58 @@ var firemen = [];
 
 var clickMode = "dropFireMan";
 
-// Game Logic
+function init() {
+    var canvas = document.getElementById("fireCanvas");
+    stage = new createjs.Stage(canvas);
+    
+    // Add background
+    var background = new createjs.Shape();
+    background.x = 0;
+    background.y = 0;
+    background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+    stage.addChild(background);
+    
+    // Setup controls
 
+    addModeButton("dropFireMan", "Firemen", 0, 0);
+    addModeButton("dropWater", "Water Bomb", 110, 0);
+    addModeButton("removeTree", "Chop Tree", 220, 0);
+    addModeButton("addTree", "Add Tree", 330, 0);
+    addModeButton("addHouse", "Add House", 440, 0);
+    addModeButton("getMap", "Get Map", 550, 0);
+    //addModeButton("tonyAbbot", "Prime Minister", 600, 0);
 
+    // Add objects
+    for(i = 0; i < mapInit.length; i++) {
+	if(mapInit[i].type == "tree")
+	{
+	    addTree(mapInit[i]);
+	}
 
-// Rendering
+	if(mapInit[i].type == "house")
+	{
+	    addHouse(mapInit[i]);
+	}
+    }
+
+    stage.on("click", handleStageClick);
+    stage.update();
+
+    createjs.Ticker.on("tick", tick);
+    createjs.Ticker.setFPS(60);
+}
+
+// Action Logic
+
+function removeFlamable(flamable){
+    flamable.removeAllEventListeners();
+    var index = flamables.indexOf(flamable);
+    if(index > -1) {
+	flamables.splice(index, 1);
+    }
+    stage.removeChild(flamable);
+    console.log("Removing " + flamable.type);
+}
 
 function addHouse(housebase) {
     var house = new createjs.Shape();
@@ -42,15 +89,9 @@ function addHouse(housebase) {
     house.burning = 0;
     house.health = 100;
     
-    house.addEventListener("click", function(evt){
-	if(clickMode == "removeTree"){
-	    house.removeAllEventListeners();
-	    var index = flamables.indexOf(house);
-	    if(index > -1){
-		flamables.splice(index, 1);
-	    }
-	    stage.removeChild(house);
-	    console.log("Removing House");
+    house.addEventListener("click", function(evt) {
+	if(clickMode == "removeTree") {
+	    removeFlamable(house);
 	}
     });
    
@@ -59,8 +100,8 @@ function addHouse(housebase) {
 }
 
 function addTree(treebase) {
-    var tree = new createjs.Shape();
-    tree.graphics.beginFill("green").drawCircle(0, 0, treebase.radius);
+    var tree = new createjs.Container();
+    
     tree.x = treebase.x;
     tree.y = treebase.y;
     
@@ -70,15 +111,13 @@ function addTree(treebase) {
     tree.burning = 0;
     tree.health = 100;
 
-    tree.addEventListener("click", function(evt){
-	if(clickMode == "removeTree"){
-	    tree.removeAllEventListeners();
-	    var index = flamables.indexOf(tree);
-	    if(index > -1){
-		flamables.splice(index, 1);
-	    }
-	    stage.removeChild(tree);
-	    console.log("Chopit.");
+    var circle = new createjs.Shape();
+    circle.graphics.beginFill("green").drawCircle(0, 0, tree.radius);
+    tree.addChild(circle);
+    
+    tree.addEventListener("click", function(evt) {
+	if(clickMode == "removeTree") {
+	    removeFlamable(tree);
 	}
     });
 
@@ -87,9 +126,11 @@ function addTree(treebase) {
 }
 
 function addModeButton(modeName, name, x, y) {
+    var button = new createjs.Container();
+    button.x = x;
+    button.y = y;
+
     var buttonShape = new createjs.Shape();
-    buttonShape.x = x;
-    buttonShape.y = y;
     buttonShape.graphics.beginFill("pink").drawRect(0, 0, 100, 30);
 
     buttonShape.addEventListener("click", function(evt) {
@@ -98,15 +139,16 @@ function addModeButton(modeName, name, x, y) {
     });
 
     var text = new createjs.Text(name, "bold 15px Arial", "red");
-    text.x = x + 5;
-    text.y = y + 5;
+    text.x = 5;
+    text.y = 5;
     
-    stage.addChild(buttonShape);
-    stage.addChild(text);
+    button.addChild(buttonShape);
+    button.addChild(text);
+    stage.addChild(button);
 }
 
 function handleStageClick(evt) {
-    if(evt.stageY < 30){
+    if(evt.stageY < 30) {
 	return;
     }
     var x = evt.stageX;
@@ -154,59 +196,57 @@ function handleStageClick(evt) {
     }
 }
 
-// Game Loop
+// Game Logic
 
-function init() {
-    var canvas = document.getElementById("fireCanvas");
-    stage = new createjs.Stage(canvas);
-    
-    // Add background
-    var background = new createjs.Shape();
-    background.x = 0;
-    background.y = 0;
-    background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
-    stage.addChild(background);
-    
-    // Setup controls
 
-    addModeButton("dropFireMan", "Firemen", 0, 0);
-    addModeButton("dropWater", "Water Bomb", 110, 0);
-    addModeButton("removeTree", "Chop Tree", 220, 0);
-    addModeButton("addTree", "Add Tree", 330, 0);
-    addModeButton("addHouse", "Add House", 440, 0);
-    addModeButton("getMap", "Get Map", 550, 0);
-    //addModeButton("tonyAbbot", "Prime Minister", 600, 0);
 
-    // Add objects
-    for(i = 0; i < mapInit.length; i++){
-	if(mapInit[i].type == "tree")
-	{
-	    addTree(mapInit[i]);
+// Rendering
+
+function updateGraphics(flamable) {
+    if(flamable.type == "tree") {
+	var circle = flamable.getChildAt(0);
+	var treeSize = flamable.radius - (1 - (100 / flamable.health)) * flamable.radius;
+	circle.graphics.clear();
+	
+	var treeColour = "green";
+	if(flamable.burning == 100) {
+	    treeColour = "red";
 	}
 
-	if(mapInit[i].type == "house")
-	{
-	    addHouse(mapInit[i]);
-	}
+	circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
     }
-
-    stage.on("click", handleStageClick);
-    stage.update();
-
-    createjs.Ticker.on("tick", tick);
-    createjs.Ticker.setFPS(60);
 }
 
+
+// Game Loop
+
+function updateBurning(flamable) {
+    if (flamable.burning > 100) {
+	flamable.health = flamable.health - flamable.burning / 100; // Consider, using log to suppress fire.
+    }
+}
+
+function considerDying(flamable) {
+    if(flamable.health < 0) {
+	
+    }
+}
 
 function tick(event) {
 //    spreadFire(mapInit, wind, event);
     
     for(i = 0; i < flamables.length; i++) {
-	if(roll){
-	    flamables[i].x = (flamables[i].x + (event.delta)/1000*100) % stage.canvas.width;
-	}
-    }
+	var flamable = flamables[i];
 
+	if(roll) {
+	    flamables.x = (flamables.x + (event.delta)/1000*100) % stage.canvas.width;
+	}
+	
+	updateBurning(flamable);
+	updateGraphics(flamable, event);
+	considerDying(flamable, event);
+    }    
+    
     stage.update(event);
 }
 
@@ -214,4 +254,3 @@ var roll = false;
 function toggleRoll() {
     roll = !roll;
 }
-
