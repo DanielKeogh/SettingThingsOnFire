@@ -28,7 +28,6 @@ var funds = 5000;
 
 function loadAssets() {
     particleImage = new Image();
-    particleImage.onload = initCanvas;
     particleImage.src = "images/particle_base.png";
 }
 
