@@ -3,7 +3,6 @@ var surroundingPenalty = 6;
 var zone0Burn = 5;
 var zone1Burn = 3;
 var zone2Burn = 1;
-var decayRate = 10;
 var burnHalfWidth = 30;
 
 // Determine if an element is in the surrounding area of a burner
@@ -93,7 +92,6 @@ function spreadFire(flamables, wind, applicationEvent)
     {
       // Burn the surroundings and apply the decay
       burnSurrounding(flamables[i], flamables, wind, applicationEvent.delta);
-      flamables[i].health -= applicationEvent.delta;
     }
   }
 }
