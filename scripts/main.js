@@ -32,8 +32,9 @@ function addHouse(x, y, width, height) {
     var house = new createjs.Shape();
     house.graphics.beginFill("blue").drawRect(0, 0, mapInit[i].width, mapInit[i].height);
 
-    house.x = mapInit[i].x;
-    house.y = mapInit[i].y;
+    house.type = "house";
+    house.x = x;
+    house.y = y;
 
     house.width = width;
     house.height = height;
