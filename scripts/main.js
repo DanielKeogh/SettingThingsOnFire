@@ -14,6 +14,8 @@ var firemen = [];
 var clickMode = "noEvent";
 var particleImage;
 var fundText;
+var burningTrees;
+var housesAlive;
 
 function loadAssets() {
 	particleImage = new Image();
@@ -22,6 +24,7 @@ function loadAssets() {
 
 function init() {
 	canvas = document.getElementById("fireCanvas");
+  cachedEmitter = makeParticleEmitter(0, 0);
 
 	// increaseDifficulty();
 	//increaseDifficulty();
@@ -29,6 +32,8 @@ function init() {
 	//increaseDifficulty();
 
 	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
+  housesAlive = difficulty.houseNumber;
+  burningTrees = difficulty.startingBurningTrees;
 
 	// Add background
 	stage.addChild(createBackground());
@@ -44,7 +49,7 @@ function init() {
 	addModeButton("getMap", "Get Map", 660, 0);
 	//addModeButton("tonyAbbot", "Prime Minister", 600, 0);
 
-	fundText = new createjs.Text("Funds: " + difficulty.funds, "bold 15px Arial", "yellow");
+	fundText = new createjs.Text("Funds: " + player.funds, "bold 15px Arial", "yellow");
 	fundText.x = 5;
 	fundText.y = stage.canvas.height - 15;
 
@@ -258,6 +263,8 @@ function getStartTheFire(fires) {
 		for (var i = 0; i < firelen; i++) {
 			if (flamables[i].type == "tree") {
 				flamables[i].burning += 100;
+        flamables[i].addChild(cachedEmitter);
+        flamables[i].emitter = cachedEmitter;
 			} else {
 				firelen++;
 			}
@@ -268,33 +275,33 @@ function getStartTheFire(fires) {
 // Rendering
 
 function updateGraphics(flamable) {
-	if (flamable.type == "tree") {
-		var circle = flamable.getChildAt(0);
-		var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
-		circle.graphics.clear();
+  if (flamable.type == "tree") {
+    var circle = flamable.getChildAt(0);
+    var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
+    circle.graphics.clear();
 
-		var treeColour = "";
-		if (flamable.burning > 99) {
-			treeColour = "red";
-		} else {
-			treeColour = rgb(Math.round(256 * flamable.burning / 100), 220, 0);
-		}
+    var treeColour = "";
+    if (flamable.burning > 99) {
+      treeColour = "red";
+    } else {
+      treeColour = rgb(Math.round(256 * flamable.burning / 100), 220, 0);
+    }
 
-		circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
-	} else if (flamable.type == "house") {
-		var rectangle = flamable.getChildAt(0);
-		rectangle.graphics.clear();
+    circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
+  } else if (flamable.type == "house") {
+    var rectangle = flamable.getChildAt(0);
+    rectangle.graphics.clear();
 
-		var houseColour = "blue";
-		if (flamable.burning > 99) {
-			houseColour = "brown";
-		}
-		if (flamable.health <= 0) {
-			houseColour = "black";
-		}
+    var houseColour = "blue";
+    if (flamable.burning > 99) {
+      houseColour = "brown";
+    }
+    if (flamable.health <= 0) {
+      houseColour = "black";
+    }
 
-		rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
-	}
+    rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
+  }
 }
 
 function makeParticleEmitter(x, y) {
@@ -354,24 +361,43 @@ function updateBurning(flamable) {
 		if (flamable.emitter == null) {
 			flamable.addChild(cachedEmitter);
 			flamable.emitter = cachedEmitter;
+
+      if(flamable.type == "tree")
+      {
+        ++burningTrees;
+      }
 		}
 
 		flamable.health -= flamable.burning / 100; // Consider, using log to suppress fire.
-	}
+	} else
+  {
+    if(flamable.emitter != null)
+    {
+      flamable.emitter = null;
+      --burningTrees;
+    }
+  }
 }
 
 function considerDying(flamable) {
 	if (!flamable.died && flamable.health < 0) {
 		if (flamable.type == "house") {
+      --housesAlive;
 			flamable.died = decreaseFunds(1000, true);
       removeFlamable(flamable, false);
 		} else {
+      --burningTrees;
 			removeFlamable(flamable, true);
 		}
 	}
 }
 
 function tick(event) {
+  if(housesAlive == 0 || burningTrees == 0)
+  {
+    endOfRound();
+  }
+
 	spreadFire(flamables, wind, event);
 
 	for (var i = 0; i < flamables.length; i++) {

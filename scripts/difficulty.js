@@ -1,4 +1,4 @@
-var difficulty = { houseNumber: 2, treeNumber: 200, fireManCost: 600, cutTreeCost: 50, cutTreeCostFactor: 2, waterBombCost: 1000 };
+var difficulty = { houseNumber: 2, treeNumber: 200, fireManCost: 600, cutTreeCost: 50, cutTreeCostFactor: 2, waterBombCost: 1000, startingBurningTrees: 2 };
 var player = { funds: 10000, roundNumber: 0 };
 
 function increaseDifficulty() {
