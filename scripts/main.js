@@ -28,7 +28,24 @@ var clickMode = "dropFireMan";
 
 // Rendering
 
+function addModeButton(modeName, name, x, y) {
+    var buttonShape = new createjs.Shape();
+    buttonShape.x = x;
+    buttonShape.y = y;
+    buttonShape.graphics.beginFill("pink").drawRect(0, 0, 80, 30);
+
+    buttonShape.addEventListener("click", function(evt) {
+	clickMode = modeName;
+	console.log(modeName);
+    });
+    
+    stage.addChild(buttonShape);
+}
+
 function handleStageClick(evt) {
+    if(evt.stageY < 30){
+	return;
+    }
     if(clickMode == "dropFireMan")
     {
 	var x = evt.stageX;
@@ -56,6 +73,13 @@ function init() {
     background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
     stage.addChild(background);
     
+    // Setup controls
+
+    addModeButton("dropFireMan", "Fire Man", 0, 0);
+    addModeButton("dropWater", "Water Bomb", 100, 0);
+    addModeButton("removeTree", "Chop Tree", 200, 0);
+    //addModeButton("tonyAbbot", "Prime Minister", 600, 0);
+
     // Add objects
     for(i = 0; i < mapInit.length; i++){
 	if(mapInit[i].type == "tree")
@@ -96,7 +120,6 @@ function tick(event) {
     for(i = 0; i < flamables.length; i++) {
 	flamables[i].x = (flamables[i].x + (event.delta)/1000*100) % stage.canvas.width;
     }
-
 
     stage.update(event);
 }
