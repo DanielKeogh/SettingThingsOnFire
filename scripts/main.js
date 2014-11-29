@@ -40,7 +40,7 @@ function init() {
 	addModeButton("addFire", "Burn Things", 550, 0);
 	addModeButton("getMap", "Get Map", 660, 0);
 
-	fundText = new createjs.Text("Funds: " + difficulty.funds, "bold 15px Arial", "yellow");
+	fundText = new createjs.Text("Funds: " + player.funds, "bold 15px Arial", "yellow");
 	fundText.x = 5;
 	fundText.y = stage.canvas.height - 15;
 
@@ -63,7 +63,7 @@ function init() {
 		}
 	}
 
-	performCountdown(6, getStartTheFire(2));
+	performCountdown(player.preparationTime, getStartTheFire(difficulty.startingFireCount));
 
 	stage.on("click", handleStageClick);
 	stage.update();
@@ -93,7 +93,7 @@ function makeFlamableHandler(flamable) {
 }
 
 function removeTree(flamable) {
-	if (decreaseFunds((flamable.radius * difficulty.cutTreeCostFactor) + difficulty.cutTreeCost)) {
+	if (decreaseFunds((flamable.radius * costs.cutTreeCostFactor) + costs.cutTreeCost)) {
 		removeFlamable(flamable, true);
 	}
 }
@@ -184,7 +184,7 @@ function addModeButton(modeName, name, x, y) {
 }
 
 function handleDropFireMan(x, y) {
-	if (decreaseFunds(difficulty.fireManCost)) {
+	if (decreaseFunds(costs.fireManCost)) {
 		var container = new createjs.Container();
 
 		var fireman = new createjs.Shape();
