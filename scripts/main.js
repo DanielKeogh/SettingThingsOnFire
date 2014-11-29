@@ -24,9 +24,6 @@ function init() {
 	canvas = document.getElementById("fireCanvas");
 
 	// increaseDifficulty();
-	//increaseDifficulty();
-	//increaseDifficulty();
-	//increaseDifficulty();
 
 	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
 

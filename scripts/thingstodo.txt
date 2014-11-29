@@ -11,13 +11,18 @@ things to do
   && Ignition count == 0
   && Player.funds >= 0
   
-- Round Number on screen
-- Map gen randomises wind
+AE- Round Number on screen
+- Map gen randomises wind speed
+AE- Map gen randomises wind direction
 - Borders / background on button
 - Map generator smarter
 - Fix flames on tree
 - Adjust balancing of waterbombs etc
 - More starting fires - difficulty
 - Grouping of starting fires
+- Aggressive 
 - Roads
 - Improve houses
+- Increase preparation time
+- create backburning
+- cost next to button
