@@ -286,7 +286,7 @@ function updateGraphics(flamable) {
 	    treeColour = "red";
 	}
 	else {
-	    treeColour = rgb(Math.round(256 * flamable.burning / 100), 265, 0);
+	    treeColour = rgb(Math.round(256 * flamable.burning / 100), 220, 0);
 	}
 	
 	circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
@@ -388,6 +388,7 @@ function tick(event) {
     
     for(var i = 0; i < flamables.length; i++) {
   var flamable = flamables[i];
+	flamable.numberOfBurnsThisRound = 1;
 
   if(roll) {
       flamable.x = (flamable.x + (event.delta)/1000*100) % stage.canvas.width;
