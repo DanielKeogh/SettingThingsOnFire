@@ -2,6 +2,8 @@ var tileContainer;
 var blackBackground;
 var actionButtons = [];
 var gameBackground;
+var fundText;
+var roundText;
 
 function changeVisibilityOfButtonOutlines() {
   for (i = 0; i < actionButtons.length; i++) {
@@ -11,10 +13,11 @@ function changeVisibilityOfButtonOutlines() {
 		}
 }
 
-function createActionButton(modeName, name, x, y, xSize) {
+function createActionButton(modeName, x, y, xSize) {
 	var button = new createjs.Container();
 	button.x = x;
 	button.y = y;
+  button.name = modeName;
 
 	var buttonShape = new createjs.Shape();
 	buttonShape.graphics.beginFill("pink").drawRect(0, 0, xSize, 30);
@@ -35,10 +38,11 @@ function createActionButton(modeName, name, x, y, xSize) {
     buttonOutline.visible = !originalVisibility;
 	});
 
-	var text = new createjs.Text(name, "bold 15px Arial", "red");
+	var text = new createjs.Text("", "bold 15px Arial", "red");
 	text.x = 5;
 	text.y = 5;
     
+  button.contentText = text;
 	button.addChild(buttonShape);
   button.addChild(buttonOutline);
 	button.addChild(text);
@@ -106,9 +110,9 @@ function initializeCanvas()
 	gameBackground.y = 0;
 	gameBackground.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
 
-	createActionButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 7, 200);
-	createActionButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 7, 200);
-	createActionButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 7, 200);
+	createActionButton("dropFireMan", 0, 7, 200);
+	createActionButton("dropWater", 225, 7, 200);
+	createActionButton("removeTree", 450, 7, 200);
   
   if (player.debug) {
     var xLoc = stage.canvas.width - 100;
@@ -120,6 +124,14 @@ function initializeCanvas()
 
   clickMode = "noEvent";
 	stage.on("click", handleStageClick);
+
+	fundText = new createjs.Text("", "bold 15px Arial", "yellow");
+	fundText.x = 5;
+	fundText.y = stage.canvas.height - 15;
+
+  roundText = new createjs.Text("Round: " + player.roundNumber, "bold 15px Arial", "yellow");
+	roundText.x = fundText.x + 110;
+	roundText.y = stage.canvas.height - 15;
 
   /***********************************/
   /***********TICKER******************/

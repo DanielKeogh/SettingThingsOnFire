@@ -8,10 +8,8 @@ var buttons = [];
 var firemen = [];
 var clickMode = "noEvent";
 var particleImage;
-var fundText;
 var burningTrees;
 var housesAlive;
-var roundText;
 var currentContext;
 
 function loadAssets() {
@@ -44,16 +42,10 @@ function init() {
     stage.addChild(actionButtons[i]);
   }
 	
-	fundText = new createjs.Text("Funds: " + player.funds, "bold 15px Arial", "yellow");
-	fundText.x = 5;
-	fundText.y = stage.canvas.height - 15;
-
+	fundText.text = "Funds: " + player.funds;
 	stage.addChild(fundText);
   
-  roundText = new createjs.Text("Round: " + player.roundNumber, "bold 15px Arial", "yellow");
-	roundText.x = fundText.x + 110;
-	roundText.y = stage.canvas.height - 15;
-
+  roundText.text = "Round: " + player.roundNumber;
 	stage.addChild(roundText);
 
   var windLabel = new createjs.Text("Wind:", "bold 15px Arial", "cyan");
@@ -64,6 +56,26 @@ function init() {
   windLabel.y = 5;
   stage.addChild(windLabel);
   stage.addChild(arrow);
+
+  // Set the texts on the action buttons:
+  for(var i = 0; i < actionButtons.length; ++ i)
+  {
+    console.log(actionButtons[i].name);
+    var newText = "";
+    switch(actionButtons[i].name)
+    {
+      case "dropFireMan":
+        newText = "Firemen: " + costs.fireManCost;
+        break;
+      case "dropWater":
+        newText = "Water bomb: " + costs.waterBombCost;
+        break;
+      case "removeTree":
+        newText = "Chop tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size";
+        break;
+    }
+    actionButtons[i].contentText.text = newText;
+  }
 
 	// Add objects
 	for (i = 0; i < mapInit.length; i++) {
