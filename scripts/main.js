@@ -419,7 +419,7 @@ function considerDying(flamable) {
 	if (!flamable.died && flamable.health < 0) {
 		if (flamable.type == "house") {
       --housesAlive;
-			flamable.died = decreaseFunds(1000, true);
+			flamable.died = decreaseFunds(costs.houseDestructionCost, true);
       removeFlamable(flamable, false);
 		} else {
       --burningTrees;
