@@ -1,5 +1,5 @@
 var difficulty = { houseNumber: 2, treeNumber: 200, startingFireCount: 2, fireManRange: 35 };
-var costs = { fireManCost: 600, cutTreeCost: 50, cutTreeCostFactor: 2, waterBombCost: 1000 };
+var costs = { fireManCost: 600, cutTreeCost: 50, cutTreeCostFactor: 2, waterBombCost: 1000, houseCost: 1000 };
 var player = { debug: false, funds: 10000, roundNumber: 1, preparationTime: 20 };
 var wind = {
 	type : "wind",
