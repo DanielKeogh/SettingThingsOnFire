@@ -7,6 +7,7 @@
 var wind = {type: "wind", speed: 200, direction: 270};
 
 var fireManSize = 5;
+var fireManRange = 20;
 
 var mapInit = [
     //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
@@ -62,15 +63,15 @@ function init() {
 
     // Add objects
     for(i = 0; i < mapInit.length; i++) {
-  if(mapInit[i].type == "tree")
-  {
-      addTree(mapInit[i]);
-  }
+      if(mapInit[i].type == "tree")
+      {
+          addTree(mapInit[i]);
+      }
 
-  if(mapInit[i].type == "house")
-  {
-      addHouse(mapInit[i]);
-  }
+      if(mapInit[i].type == "house")
+      {
+          addHouse(mapInit[i]);
+      }
     }
 
     stage.on("click", handleStageClick);
@@ -189,16 +190,33 @@ function addModeButton(modeName, name, x, y) {
 }
 
 function handleDropFireMan(x, y) {
-  if (decreaseFunds(fireManCost)) {
-    var fireman = new createjs.Shape();
-    fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
-    fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize/2);
-    fireman.x = x;
-    fireman.y = y;
-    
-    firemen[firemen.length] = fireman;
-    stage.addChild(fireman);
-  }
+	if (decreaseFunds(fireManCost)) {
+		var container = new createjs.Container();
+		var fireman = new createjs.Shape();
+		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
+		fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize/2);
+		container.addEventListener("mouseover", firemanHoverHandleEvt);
+		container.addEventListener("mouseout", firemanHoverHandleEvt);
+		container.x = x;
+		container.y = y;
+		container.addChild(fireman);
+		
+		firemen[firemen.length] = container;
+		stage.addChild(container);
+	}
+}
+
+function firemanHoverHandleEvt(evt) {
+	var container = evt.target;
+	if (evt.type == "mouseover") {
+		var arcShape = new createjs.Shape();
+		arcShape.graphics.beginStroke("blue");
+		arcShape.graphics.arc(0, 0, fireManRange, 0, Math.PI*2);
+		container.addChild(arcShape);
+	}
+	else if (evt.type == "mouseout") {
+		container.removeChildAt(1);
+	}
 }
 
 function handleStageClick(evt) {
@@ -343,15 +361,14 @@ function updateBurning(flamable) {
 }
 
 function considerDying(flamable) {
-    if(flamable.health < 0 && !flamable.died) {    
-  
-    if(flamable.type == "house"){
-      flamable.died = decreaseFunds(1000, true);
-    }
-    else{      
-      removeFlamable(flamable);
-    }
-  }
+    if(!flamable.died && flamable.health < 0) {			
+		if(flamable.type == "house"){
+			flamable.died = decreaseFunds(1000, true);
+		}
+		else{			
+			removeFlamable(flamable);
+		}
+	}
 }
 
 function tick(event) {
