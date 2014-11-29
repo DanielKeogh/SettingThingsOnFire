@@ -39,13 +39,8 @@ function init() {
     
     stage = new createjs.Stage(canvas);
     
-<<<<<<< HEAD
     mapInit = map6;
-
-=======
-    mapInit = map2;
-    
->>>>>>> origin/master
+	
     // Add background
     var background = new createjs.Shape();
     background.x = 0;
@@ -329,14 +324,15 @@ function updateBurning(flamable) {
 }
 
 function considerDying(flamable) {
-    if(flamable.health < 0) {
-	removeFlamable(flamable);
+    if(flamable.health < 0) {		
 	
-	if(flamable.type == "house")
-	{
-	    funds -= 1000;
+		if(flamable.type == "house"){
+			funds -= 1000;
+		}
+		else{			
+			removeFlamable(flamable);
+		}
 	}
-    }
 }
 
 function tick(event) {
