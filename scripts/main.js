@@ -9,11 +9,11 @@ var wind = {type: "wind", speed: 3, direction: 270};
 var fireManSize = 5;
 
 var mapInit = [
-    {type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
-    {type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
-    {type: "tony"}
- ];
-
+    //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
+    //{type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
+    //{type: "tony"}
+];
+ 
 var stage;
 
 var flamables = [];
