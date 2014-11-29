@@ -9,6 +9,8 @@ var wind = {type: "wind", speed: 200, direction: 270};
 var fireManSize = 5;
 var fireManRange = 35;
 
+var fps = 60;
+
 var mapInit = [
     //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
     //{type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
@@ -44,7 +46,7 @@ function init() {
     
     // Add background   
     stage.addChild(createBackground());
-    
+
     // Setup controls
 
     addModeButton("dropFireMan", "Firemen", 0, 0);
@@ -75,11 +77,13 @@ function init() {
       }
     }
 
+    performCountdown(6, getStartTheFire(2));
+    
     stage.on("click", handleStageClick);
     stage.update();
 
     createjs.Ticker.on("tick", tick);
-    createjs.Ticker.setFPS(60);
+    createjs.Ticker.setFPS(fps);
 }
 
 function createBackground() {
@@ -254,37 +258,58 @@ function handleStageClick(evt) {
 
 // Game Logic
 
+function getStartTheFire(fires)
+{
+    return function()
+    {
+	var firelen = fires;
+	for(var i = 0; i < firelen; i++)
+	{
+	    if(flamables[i].type == "tree")
+	    {
+		flamables[i].burning += 100;
+	    }
+	    else
+	    {
+		firelen++;
+	    }
+	}
+    }
+}
 
 
 // Rendering
 
 function updateGraphics(flamable) {
     if(flamable.type == "tree") {
-    var circle = flamable.getChildAt(0);
-    var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
-    circle.graphics.clear();
-    
-    var treeColour = "green";
-    if(flamable.burning > 99) {
-      treeColour = "red";
+	var circle = flamable.getChildAt(0);
+	var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
+	circle.graphics.clear();
+	
+	var treeColour = "";
+	if(flamable.burning > 99) {
+	    treeColour = "red";
+	}
+	else {
+	    treeColour = rgb(Math.round(256 * flamable.burning / 100), 265, 0);
+	}
+	
+	circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
     }
-
-    circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
-    }
-  else if (flamable.type == "house") {
-    var rectangle = flamable.getChildAt(0);
-    rectangle.graphics.clear();
-  
-    var houseColour = "blue";
-    if(flamable.burning > 99) {
-      houseColour = "brown";
-    }
-    if(flamable.health <= 0) {
-      houseColour = "black";
-    }
-    
-    rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
-  }  
+    else if (flamable.type == "house") {
+	var rectangle = flamable.getChildAt(0);
+	rectangle.graphics.clear();
+	
+	var houseColour = "blue";
+	if(flamable.burning > 99) {
+	    houseColour = "brown";
+	}
+	if(flamable.health <= 0) {
+	    houseColour = "black";
+	}
+	
+	rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
+    }  
 }
 
 function makeParticleEmitter(x, y) {
@@ -372,17 +397,40 @@ function tick(event) {
   if(roll) {
       flamable.x = (flamable.x + (event.delta)/1000*100) % stage.canvas.width;
   }
-  
+	
   updateBurning(flamable);
   updateGraphics(flamable, event);
   considerDying(flamable, event);
-    }    
-
+    } 
+    
     fundText.text = "Funds: " + player.funds;
+    
+    //Count down
+    if(countdown != null)
+    {
+	countdown.seconds -= event.delta / 1000;
+	countdown.text = Math.round(countdown.seconds);
+	if(countdown.seconds < 0)
+	{
+	    stage.removeChild(countdown);
+	    countdown.doAction();
+	    countdown = null;
+	}
+    }
     stage.update(event);
 }
 
 var roll = false;
 function toggleRoll() {
     roll = !roll;
+}
+
+var countdown;
+function performCountdown(seconds, action){
+    countdown = new createjs.Text(seconds, "bold 70px Arial", "black");
+    countdown.y = stage.canvas.height / 2;
+    countdown.x = stage.canvas.width / 2;
+    countdown.seconds = seconds;
+    countdown.doAction = action;
+    stage.addChild(countdown);
 }
