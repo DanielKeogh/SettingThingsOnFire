@@ -7,6 +7,7 @@ function nextRoundProtocol()
 function losersProtocol()
 {
   welcome();
+  stage.removeChild(bombArc);
 }
 
 // Determine what to do when a round has ended

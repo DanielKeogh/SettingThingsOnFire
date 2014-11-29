@@ -1,6 +1,5 @@
 function welcomeTick()
 {
-  console.log("welcomeTick");
   stage.update();
 }
 

@@ -411,8 +411,6 @@ function tick(event) {
 
 function gameTick(event)
 {
-  console.log("gameTick");
-
   if(housesAlive == 0 || burningTrees == 0)
   {
     endOfRound();
