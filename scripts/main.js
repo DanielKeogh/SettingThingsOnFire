@@ -24,6 +24,7 @@ var clickMode = "dropFireMan";
 
 var particleImage;
 
+var fundText;
 
 function loadAssets() {
     particleImage = new Image();
@@ -60,6 +61,12 @@ function init() {
     addModeButton("getMap", "Get Map", 660, 0);
     //addModeButton("tonyAbbot", "Prime Minister", 600, 0);
 
+    fundText = new createjs.Text("Funds: " + funds, "bold 15px Arial", "yellow");
+    fundText.x = 5;
+    fundText.y = stage.canvas.height - 15;
+
+    stage.addChild(fundText);
+    
     // Add objects
     for(i = 0; i < mapInit.length; i++) {
 	if(mapInit[i].type == "tree")
@@ -372,7 +379,8 @@ function tick(event) {
 	updateGraphics(flamable, event);
 	considerDying(flamable, event);
     }    
-    
+
+    fundText.text = "Funds: " + funds;
     stage.update(event);
 }
 
