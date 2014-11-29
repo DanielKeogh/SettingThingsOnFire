@@ -116,7 +116,7 @@ function addBurn(element, amount, delta)
 {
   for(var i = 0; i < firemen.length; i++)
   {
-    if(element.type == "tree" && getDistance(firemen[i], element) < difficulty.fireManRange + element.radius)
+    if(element.type == "tree" && getDistance(firemen[i], element) < fireManRange + element.radius)
     {
       return;
     }
