@@ -68,6 +68,15 @@ function init() {
 
 	stage.addChild(roundText);
 
+  var windLabel = new createjs.Text("Wind:", "bold 15px Arial", "cyan");
+  var arrow = createArrow(wind.direction, wind.speed);
+  arrow.x = stage.canvas.width - 30;
+  arrow.y = 15;
+  windLabel.x = stage.canvas.width - 90;
+  windLabel.y = 5;
+  stage.addChild(windLabel);
+  stage.addChild(arrow);
+
 	// Add objects
 	for (i = 0; i < mapInit.length; i++) {
 		if (mapInit[i].type == "tree") {
@@ -470,7 +479,7 @@ function gameTick(event)
 	//Count down
 	if (countdown != null) {
 		countdown.seconds -= event.delta / 1000;
-		countdown.text = Math.round(countdown.seconds);
+		countdown.text = Math.round(countdown.seconds) + 1;
 		if (countdown.seconds < 0) {
 			stage.removeChild(countdown);
 			countdown.doAction();
@@ -487,7 +496,7 @@ function toggleRoll() {
 
 var countdown;
 function performCountdown(seconds, action) {
-	countdown = new createjs.Text(seconds, "bold 70px Arial", "black");
+	countdown = new createjs.Text(seconds + 1, "bold 70px Arial", "black");
 	countdown.y = stage.canvas.height / 2;
 	countdown.x = stage.canvas.width / 2;
 	countdown.seconds = seconds;
