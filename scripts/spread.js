@@ -63,7 +63,7 @@ function burnSurrounding(burner, elements, wind, delta)
         break;
       case 0:
         element.burning += zone0Burn * delta;
-        break;
+        break:
       case 1:
         element.burning += zone1Burn * delta;
         break;
