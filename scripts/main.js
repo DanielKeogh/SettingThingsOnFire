@@ -7,7 +7,9 @@
 var wind = {type: "wind", speed: 200, direction: 270};
 
 var fireManSize = 5;
-var fireManRange = 20;
+var fireManRange = 35;
+
+var fps = 60;
 
 var mapInit = [
     //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
@@ -23,10 +25,11 @@ var flamables = [];
 
 var firemen = [];
 
-var clickMode = "dropFireMan";
+var clickMode = "noEvent";
 
 var particleImage;
 
+var fundText;
 
 function loadAssets() {
     particleImage = new Image();
@@ -36,22 +39,11 @@ function loadAssets() {
 function init() {
     canvas = document.getElementById("fireCanvas");
     
-    //Menu goes here:
-    
-    stage = new createjs.Stage(canvas);
-    
     mapInit = generateMap(4, 300, canvas.width, canvas.height);
-    
-    // Add background
-    var background = new createjs.Shape();
-    background.x = 0;
-    background.y = 0;
-    background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
-    stage.addChild(background);
     
     // Add background   
     stage.addChild(createBackground());
-    
+
     // Setup controls
 
     addModeButton("dropFireMan", "Firemen", 0, 0);
@@ -63,6 +55,12 @@ function init() {
     addModeButton("getMap", "Get Map", 660, 0);
     //addModeButton("tonyAbbot", "Prime Minister", 600, 0);
 
+    fundText = new createjs.Text("Funds: " + funds, "bold 15px Arial", "yellow");
+    fundText.x = 5;
+    fundText.y = stage.canvas.height - 15;
+
+    stage.addChild(fundText);
+    
     // Add objects
     for(i = 0; i < mapInit.length; i++) {
       if(mapInit[i].type == "tree")
@@ -76,11 +74,13 @@ function init() {
       }
     }
 
+    performCountdown(6, getStartTheFire(2));
+    
     stage.on("click", handleStageClick);
     stage.update();
 
     createjs.Ticker.on("tick", tick);
-    createjs.Ticker.setFPS(60);
+    createjs.Ticker.setFPS(fps);
 }
 
 function createBackground() {
@@ -194,30 +194,21 @@ function addModeButton(modeName, name, x, y) {
 function handleDropFireMan(x, y) {
 	if (decreaseFunds(fireManCost)) {
 		var container = new createjs.Container();
+    
 		var fireman = new createjs.Shape();
 		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
 		fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize/2);
-		container.addEventListener("mouseover", firemanHoverHandleEvt);
-		container.addEventListener("mouseout", firemanHoverHandleEvt);
+    var arcShape = new createjs.Shape();
+		arcShape.graphics.beginStroke("rgba(0, 0, 240, 1)").arc(0, 0, fireManRange, 0, Math.PI*2);
+    arcShape.graphics.beginFill("rgba(0, 0, 240, 0.3)").drawCircle(0, 0, fireManRange);
+		container.addChild(arcShape);
+    container.addChild(fireman);
 		container.x = x;
 		container.y = y;
-		container.addChild(fireman);
+		
 		
 		firemen[firemen.length] = container;
 		stage.addChild(container);
-	}
-}
-
-function firemanHoverHandleEvt(evt) {
-	var container = evt.target;
-	if (evt.type == "mouseover") {
-		var arcShape = new createjs.Shape();
-		arcShape.graphics.beginStroke("blue");
-		arcShape.graphics.arc(0, 0, fireManRange, 0, Math.PI*2);
-		container.addChild(arcShape);
-	}
-	else if (evt.type == "mouseout") {
-		container.removeChildAt(1);
 	}
 }
 
@@ -267,37 +258,58 @@ function handleStageClick(evt) {
 
 // Game Logic
 
+function getStartTheFire(fires)
+{
+    return function()
+    {
+	var firelen = fires;
+	for(var i = 0; i < firelen; i++)
+	{
+	    if(flamables[i].type == "tree")
+	    {
+		flamables[i].burning += 100;
+	    }
+	    else
+	    {
+		firelen++;
+	    }
+	}
+    }
+}
 
 
 // Rendering
 
 function updateGraphics(flamable) {
     if(flamable.type == "tree") {
-    var circle = flamable.getChildAt(0);
-    var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
-    circle.graphics.clear();
-    
-    var treeColour = "green";
-    if(flamable.burning > 99) {
-      treeColour = "red";
+	var circle = flamable.getChildAt(0);
+	var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
+	circle.graphics.clear();
+	
+	var treeColour = "";
+	if(flamable.burning > 99) {
+	    treeColour = "red";
+	}
+	else {
+	    treeColour = rgb(Math.round(256 * flamable.burning / 100), 265, 0);
+	}
+	
+	circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
     }
-
-    circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
-    }
-  else if (flamable.type == "house") {
-    var rectangle = flamable.getChildAt(0);
-    rectangle.graphics.clear();
-  
-    var houseColour = "blue";
-    if(flamable.burning > 99) {
-      houseColour = "brown";
-    }
-    if(flamable.health < 100) {
-      houseColour = "black";
-    }
-    
-    rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
-  }  
+    else if (flamable.type == "house") {
+	var rectangle = flamable.getChildAt(0);
+	rectangle.graphics.clear();
+	
+	var houseColour = "blue";
+	if(flamable.burning > 99) {
+	    houseColour = "brown";
+	}
+	if(flamable.health <= 0) {
+	    houseColour = "black";
+	}
+	
+	rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
+    }  
 }
 
 function makeParticleEmitter(x, y) {
@@ -385,7 +397,7 @@ function tick(event) {
   if(roll) {
       flamable.x = (flamable.x + (event.delta)/1000*100) % stage.canvas.width;
   }
-  
+	
   updateBurning(flamable);
   updateGraphics(flamable, event);
   considerDying(flamable, event);
@@ -393,10 +405,35 @@ function tick(event) {
     
     stage.removeChild(bombArc);
     if(clickMode == "dropWater") handleDropWaterHover();
+    fundText.text = "Funds: " + funds;
+
+    //Count down
+    if(countdown != null)
+    {
+	countdown.seconds -= event.delta / 1000;
+	countdown.text = Math.round(countdown.seconds);
+	if(countdown.seconds < 0)
+	{
+	    stage.removeChild(countdown);
+	    countdown.doAction();
+	    countdown = null;
+	}
+    }
+   
     stage.update(event);
 }
 
 var roll = false;
 function toggleRoll() {
     roll = !roll;
+}
+
+var countdown;
+function performCountdown(seconds, action){
+    countdown = new createjs.Text(seconds, "bold 70px Arial", "black");
+    countdown.y = stage.canvas.height / 2;
+    countdown.x = stage.canvas.width / 2;
+    countdown.seconds = seconds;
+    countdown.doAction = action;
+    stage.addChild(countdown);
 }
