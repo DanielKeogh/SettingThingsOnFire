@@ -19,9 +19,20 @@ function loadAssets() {
 	particleImage.src = "images/particle_base.png";
 }
 
+function resetGameState() {
+  flamables = [];
+  buttons = [];
+  firemen = [];
+  burningTrees = 0;
+  housesAlive = 0;
+}
+
 function init() {
+  resetGameState();
+  
 	canvas = document.getElementById("fireCanvas");
   cachedEmitter = makeParticleEmitter(0, 0);
+  clickMode = "noEvent";
 
 	 //increaseDifficulty();
 
@@ -97,6 +108,9 @@ function makeFlamableHandler(flamable) {
 
 function removeTree(flamable) {
 	if (decreaseFunds((flamable.radius * costs.cutTreeCostFactor) + costs.cutTreeCost)) {
+    if (flamable.burning > 0) {
+      --burningTrees;
+    }
 		removeFlamable(flamable, true);
 	}
 }
