@@ -24,7 +24,6 @@ var clickMode = "dropFireMan";
 
 var particleImage;
 
-var funds = 5000;
 
 function loadAssets() {
     particleImage = new Image();
@@ -38,8 +37,8 @@ function init() {
     
     stage = new createjs.Stage(canvas);
     
-    mapInit = map2;
-    
+    mapInit = map6;
+	
     // Add background
     var background = new createjs.Shape();
     background.x = 0;
@@ -109,6 +108,7 @@ function addFlamable(base){
     container.startingHealth = 500;
     container.health = 500;
     container.emitter = null;
+	container.died = false;
 
     return container;
 }
@@ -173,6 +173,18 @@ function addModeButton(modeName, name, x, y) {
     stage.addChild(button);
 }
 
+function handleDropFireMan(x, y) {
+	if (decreaseFunds(fireManCost)) {
+		var fireman = new createjs.Shape();
+		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
+		fireman.x = x;
+		fireman.y = y;
+		
+		firemen[firemen.length] = fireman;
+		stage.addChild(fireman);
+	}
+}
+
 function handleStageClick(evt) {
     if(evt.stageY < 30) {
 	return;
@@ -182,13 +194,7 @@ function handleStageClick(evt) {
     
     if(clickMode == "dropFireMan")
     {
-	var fireman = new createjs.Shape();
-	fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
-	fireman.x = x;
-	fireman.y = y;
-	
-	firemen[firemen.length] = fireman;
-	stage.addChild(fireman);
+		handleDropFireMan(x, y);	
     }
     else if(clickMode == "addTree")
     {
@@ -249,7 +255,7 @@ function updateGraphics(flamable) {
 		if(flamable.burning > 99) {
 			houseColour = "brown";
 		}
-		if(flamable.health < 20) {
+		if(flamable.health < 100) {
 			houseColour = "black";
 		}
 		
@@ -323,14 +329,15 @@ function updateBurning(flamable) {
 }
 
 function considerDying(flamable) {
-    if(flamable.health < 0) {
-	removeFlamable(flamable);
+    if(flamable.health < 0 && !flamable.died) {		
 	
-	if(flamable.type == "house")
-	{
-	    funds -= 1000;
+		if(flamable.type == "house"){
+			flamable.died = decreaseFunds(1000, true);
+		}
+		else{			
+			removeFlamable(flamable);
+		}
 	}
-    }
 }
 
 function tick(event) {
