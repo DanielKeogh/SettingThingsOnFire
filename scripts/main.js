@@ -4,6 +4,7 @@ var fps = 60;
 var stage;
 var canvas;
 var flamables = [];
+var buttons = [];
 var firemen = [];
 var clickMode = "noEvent";
 var particleImage;
@@ -183,17 +184,28 @@ function addModeButton(modeName, name, x, y, xSize) {
     else {
       clickMode = "noEvent";
     }
-    buttonOutline.visible = !buttonOutline.visible;
+    var originalVisibility = buttonOutline.visible;    
+    changeVisibilityOfButtonOutlines();    
+    buttonOutline.visible = !originalVisibility;
 	});
 
 	var text = new createjs.Text(name, "bold 15px Arial", "red");
 	text.x = 5;
 	text.y = 5;
-
+    
 	button.addChild(buttonShape);
   button.addChild(buttonOutline);
 	button.addChild(text);
+  buttons[buttons.length] = button;
 	stage.addChild(button);
+}
+
+function changeVisibilityOfButtonOutlines() {
+  for (i = 0; i < buttons.length; i++) {
+			var button = buttons[i];
+			var outline = button.getChildAt(1);
+      outline.visible = false;
+		}
 }
 
 function handleDropFireMan(x, y) {
