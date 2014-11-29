@@ -77,18 +77,25 @@ function burnSurrounding(burner, elements, wind, delta)
       default:
         break;
     }
- 
+
     if(isInSurrounding(burner, element))
     {
-	addBurn(element, surroundingPenalty, delta);
+      addBurn(element, surroundingPenalty, delta);
     }
   }
 }
 
 function addBurn(element, amount, delta)
 {
-    element.burning += amount * delta / (element.numberOfBurnsThisRound * 3);
-    element.numberOfBurnsThisRound++;
+  for(var i = 0; i < firemen.length; i++)
+  {
+    if(element.type == "tree" && getDistance(firemen[i], element) < difficulty.fireManRange + element.radius)
+    {
+      return;
+    }
+  }
+  element.burning += amount * delta / (element.numberOfBurnsThisRound * 3);
+  element.numberOfBurnsThisRound++;
 }
 
 // Performs the spreading of the fire when a whole bunch of trees are burning

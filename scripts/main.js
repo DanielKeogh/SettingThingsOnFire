@@ -404,7 +404,7 @@ function updateBurning(flamable) {
       }
 		}
 
-		flamable.health -= flamable.burning / 100; // Consider, using log to suppress fire.
+		flamable.health -= flamable.burning * 10 / 100; // Consider, using log to suppress fire.
 	} else
   {
     if(flamable.emitter != null)
@@ -419,7 +419,7 @@ function considerDying(flamable) {
 	if (!flamable.died && flamable.health < 0) {
 		if (flamable.type == "house") {
       --housesAlive;
-			flamable.died = decreaseFunds(costs.houseDestructionCost, true);
+			flamable.died = decreaseFunds(costs.houseCost, true);
       removeFlamable(flamable, false);
 		} else {
       --burningTrees;
@@ -459,7 +459,7 @@ function gameTick(event)
 
 		updateBurning(flamable);
 		updateGraphics(flamable, event);
-		considerDying(flamable, event);
+		considerDying(flamable);
 	}
 
 	stage.removeChild(bombArc);
