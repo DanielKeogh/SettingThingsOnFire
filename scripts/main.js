@@ -11,6 +11,7 @@ var fundText;
 var burningTrees;
 var housesAlive;
 var roundText;
+var currentContext;
 
 function loadAssets() {
 	particleImage = new Image();
@@ -69,11 +70,8 @@ function init() {
 	performCountdown(player.preparationTime, getStartTheFire(difficulty.startingFireCount));
 
 	stage.on("click", handleStageClick);
+  currentContext = "game";
 	stage.update();
-
-	createjs.Ticker.on("tick", tick);
-	createjs.Ticker.setFPS(fps);
-  createjs.Ticker.setPaused(false);
 }
 
 function createBackground() {
@@ -394,10 +392,20 @@ function considerDying(flamable) {
 }
 
 function tick(event) {
-  if(event.paused)
+  switch(currentContext)
   {
-    return;
+    case "welcome":
+      welcomeTick();
+      break;
+    case "game":
+      gameTick(event);
+      break;
   }
+}
+
+function gameTick(event)
+{
+  console.log("gameTick");
 
   if(housesAlive == 0 || burningTrees == 0)
   {

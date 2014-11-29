@@ -1,7 +1,9 @@
 function welcomeTick()
 {
+  console.log("welcomeTick");
   stage.update();
 }
+
 function welcome()
 {
   stage = new createjs.Stage("fireCanvas");
@@ -19,8 +21,6 @@ function welcome()
   buttonBackground.graphics.beginFill("pink").drawRect(0, 0, 180, 60);
 
   playButton.on("click", function(evt){
-    createjs.Ticker.off("tick", welcomeTick);
-    createjs.Ticker.setPaused(true);
     stage.clear();
     init();
   });
@@ -52,8 +52,8 @@ function welcome()
 
   stage.addChild(titleContainer);
 
+  currentContext = "welcome";
+  createjs.Ticker.setFPS(fps);
+  createjs.Ticker.on("tick", tick);
   stage.update();
-  createjs.Ticker.setFPS(30);
-  createjs.Ticker.on("tick", welcomeTick);
-  createjs.Ticker.setPaused(false);
 }
