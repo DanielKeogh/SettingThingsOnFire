@@ -109,6 +109,7 @@ function addFlamable(base){
     container.startingHealth = 500;
     container.health = 500;
     container.emitter = null;
+	container.died = false;
 
     return container;
 }
@@ -173,6 +174,18 @@ function addModeButton(modeName, name, x, y) {
     stage.addChild(button);
 }
 
+function handleDropFireMan(x, y) {
+	if (decreaseFunds(fireManCost)) {
+		var fireman = new createjs.Shape();
+		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
+		fireman.x = x;
+		fireman.y = y;
+		
+		firemen[firemen.length] = fireman;
+		stage.addChild(fireman);
+	}
+}
+
 function handleStageClick(evt) {
     if(evt.stageY < 30) {
 	return;
@@ -182,13 +195,7 @@ function handleStageClick(evt) {
     
     if(clickMode == "dropFireMan")
     {
-	var fireman = new createjs.Shape();
-	fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
-	fireman.x = x;
-	fireman.y = y;
-	
-	firemen[firemen.length] = fireman;
-	stage.addChild(fireman);
+		handleDropFireMan(x, y);	
     }
     else if(clickMode == "addTree")
     {
@@ -323,10 +330,10 @@ function updateBurning(flamable) {
 }
 
 function considerDying(flamable) {
-    if(flamable.health < 0) {		
+    if(flamable.health < 0 && !flamable.died) {		
 	
 		if(flamable.type == "house"){
-			decreaseFunds(1000);
+			flamable.died = decreaseFunds(1000, true);
 		}
 		else{			
 			removeFlamable(flamable);
