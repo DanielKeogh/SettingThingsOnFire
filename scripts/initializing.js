@@ -4,7 +4,7 @@ var actionButtons = [];
 var gameBackground;
 
 function changeVisibilityOfButtonOutlines() {
-  for (i = 0; i < buttons.length; i++) {
+  for (i = 0; i < actionButtons.length; i++) {
 			var button = actionButtons[i];
 			var outline = button.getChildAt(1);
       outline.visible = false;
@@ -106,9 +106,9 @@ function initializeCanvas()
 	gameBackground.y = 0;
 	gameBackground.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
 
-	createActionButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0, 200);
-	createActionButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 0, 200);
-	createActionButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 0, 200);
+	createActionButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 7, 200);
+	createActionButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 7, 200);
+	createActionButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 7, 200);
   
   if (player.debug) {
     var xLoc = stage.canvas.width - 100;

@@ -67,6 +67,7 @@ function init() {
 		}
 	}
 
+  changeVisibilityOfButtonOutlines();
 	performCountdown(player.preparationTime, getStartTheFire(difficulty.startingFireCount));
 
   currentContext = "game";
