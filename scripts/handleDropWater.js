@@ -3,7 +3,7 @@ var bombArc;
 
 function handleDropWaterClick(x, y, flamables)
 {
-  if (decreaseFunds(difficulty.waterBombCost)) {
+  if (decreaseFunds(costs.waterBombCost)) {
     for(var i = 0; i < flamables.length; ++ i)
     {
       if(getDistance({x: x, y: y}, flamables[i]) < waterBombRadius)

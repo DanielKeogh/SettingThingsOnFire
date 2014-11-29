@@ -1,11 +1,5 @@
 //Map Constants & Vars
-var wind = {
-	type : "wind",
-	speed : 200,
-	direction : 270
-};
 var fireManSize = 5;
-var fireManRange = 35;
 var fps = 60;
 var stage;
 var canvas;
@@ -16,6 +10,7 @@ var particleImage;
 var fundText;
 var burningTrees;
 var housesAlive;
+var roundText;
 
 function loadAssets() {
 	particleImage = new Image();
@@ -27,9 +22,6 @@ function init() {
   cachedEmitter = makeParticleEmitter(0, 0);
 
 	// increaseDifficulty();
-	//increaseDifficulty();
-	//increaseDifficulty();
-	//increaseDifficulty();
 
 	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
   housesAlive = difficulty.houseNumber;
@@ -39,21 +31,29 @@ function init() {
 	stage.addChild(createBackground());
 
 	// Setup controls
-
-	addModeButton("dropFireMan", "Firemen", 0, 0);
-	addModeButton("dropWater", "Water Bomb", 110, 0);
-	addModeButton("removeTree", "Chop Tree", 220, 0);
-	addModeButton("addTree", "Add Tree", 330, 0);
-	addModeButton("addHouse", "Add House", 440, 0);
-	addModeButton("addFire", "Burn Things", 550, 0);
-	addModeButton("getMap", "Get Map", 660, 0);
-	//addModeButton("tonyAbbot", "Prime Minister", 600, 0);
-
+	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0, 200);
+	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 0, 200);
+	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 0, 200);
+  
+  if (player.debug) {
+    var xLoc = stage.canvas.width - 100;
+    addModeButton("addTree", "Add Tree", xLoc, 100, 100);
+    addModeButton("addHouse", "Add House", xLoc, 140, 100);
+    addModeButton("addFire", "Burn Things", xLoc, 180, 100);
+    addModeButton("getMap", "Get Map", xLoc, 220, 100);
+  }  
+	
 	fundText = new createjs.Text("Funds: " + player.funds, "bold 15px Arial", "yellow");
 	fundText.x = 5;
 	fundText.y = stage.canvas.height - 15;
 
 	stage.addChild(fundText);
+  
+  roundText = new createjs.Text("Round: " + player.roundNumber, "bold 15px Arial", "yellow");
+	roundText.x = fundText.x + 110;
+	roundText.y = stage.canvas.height - 15;
+
+	stage.addChild(roundText);
 
 	// Add objects
 	for (i = 0; i < mapInit.length; i++) {
@@ -66,7 +66,7 @@ function init() {
 		}
 	}
 
-	performCountdown(6, getStartTheFire(2));
+	performCountdown(player.preparationTime, getStartTheFire(difficulty.startingFireCount));
 
 	stage.on("click", handleStageClick);
 	stage.update();
@@ -96,7 +96,7 @@ function makeFlamableHandler(flamable) {
 }
 
 function removeTree(flamable) {
-	if (decreaseFunds((flamable.radius * difficulty.cutTreeCostFactor) + difficulty.cutTreeCost)) {
+	if (decreaseFunds((flamable.radius * costs.cutTreeCostFactor) + costs.cutTreeCost)) {
 		removeFlamable(flamable, true);
 	}
 }
@@ -165,13 +165,13 @@ function addTree(treebase) {
 	flamables[flamables.length] = tree;
 }
 
-function addModeButton(modeName, name, x, y) {
+function addModeButton(modeName, name, x, y, xSize) {
 	var button = new createjs.Container();
 	button.x = x;
 	button.y = y;
 
 	var buttonShape = new createjs.Shape();
-	buttonShape.graphics.beginFill("pink").drawRect(0, 0, 100, 30);
+	buttonShape.graphics.beginFill("pink").drawRect(0, 0, xSize, 30);
 
 	button.addEventListener("click", function (evt) {
 		clickMode = modeName;
@@ -187,15 +187,15 @@ function addModeButton(modeName, name, x, y) {
 }
 
 function handleDropFireMan(x, y) {
-	if (decreaseFunds(difficulty.fireManCost)) {
+	if (decreaseFunds(costs.fireManCost)) {
 		var container = new createjs.Container();
 
 		var fireman = new createjs.Shape();
 		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
 		fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize / 2);
 		var arcShape = new createjs.Shape();
-		arcShape.graphics.beginStroke("rgba(0, 0, 240, 1)").arc(0, 0, fireManRange, 0, Math.PI * 2);
-		arcShape.graphics.beginFill("rgba(0, 0, 240, 0.3)").drawCircle(0, 0, fireManRange);
+		arcShape.graphics.beginStroke("rgba(0, 0, 240, 1)").arc(0, 0, difficulty.fireManRange, 0, Math.PI * 2);
+		arcShape.graphics.beginFill("rgba(0, 0, 240, 0.3)").drawCircle(0, 0, difficulty.fireManRange);
 		container.addChild(arcShape);
 		container.addChild(fireman);
 		container.x = x;
