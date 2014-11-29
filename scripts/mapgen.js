@@ -36,17 +36,21 @@ function treeCollidesWithExistingHouse(base, flamables) {
     return false;
 }
 
-function generateMap(housecount, treecount, stage) {
+function generateMap(housecount, treecount, stagewidth, stageheight) {
     // Make the houses
+    var mapInit = [];
+    var houses = [];
+
     for(var i = 0; i < housecount; i++) {
 	var randwidth = Math.round(Math.random() * 4 + 3) * 5;
 	var randheight = Math.round(Math.random() * 3 + 3) * 5;
-	var randx = Math.random() * (stage.canvas.width - randwidth);
-	var randy = Math.random() * (stage.canvas.height - randheight);
-	var houseBase = {x: randx, randy: y, width: randwidth, height: randheight};
+	var randx = Math.random() * (stagewidth - randwidth);
+	var randy = Math.random() * (stageheight - randheight);
+	var housebase = {type: "house", x: randx, randy: y, width: randwidth, height: randheight};
 
-	if(!houseCollidesWithExistingHouse(houseBase, flamables)) {
-	    addHouse(houseBase);
+	if(!houseCollidesWithExistingHouse(housebase, houses)) {
+	    houses[houses.length] = housebase;
+	    mapInit[mapInit.length] = housebase;
 	}
 	else
 	{
@@ -60,14 +64,16 @@ function generateMap(housecount, treecount, stage) {
 	var randx = Math.random() * (stage.canvas.width - randradius * 2) + randradius;
 	var randy = Math.random() * (stage.canvas.height - randradius * 2) + randradius;
 	
-	var treebase = {x: randx, y: randy, radius: randradius};
-	if(!treeCollidesWithExistingHouse(treebase))
+	var treebase = {type: "tree", x: randx, y: randy, radius: randradius};
+	if(!treeCollidesWithExistingHouse(treebase, houses))
 	{
-	    addTree(treebase);
+	    mapInit[mapInit.length] = treebase;
 	}
 	else
 	{
 	    i--;
 	}
     }
+
+    return mapInit;
 }
