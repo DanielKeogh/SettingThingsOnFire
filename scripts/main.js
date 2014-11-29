@@ -24,6 +24,7 @@ var clickMode = "dropFireMan";
 
 function init() {
     var canvas = document.getElementById("fireCanvas");
+	
     stage = new createjs.Stage(canvas);
     
     mapInit = map2;
@@ -32,7 +33,7 @@ function init() {
     var background = new createjs.Shape();
     background.x = 0;
     background.y = 0;
-    background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+    background.graphics.beginFill("yellow").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
     stage.addChild(background);
     
     // Setup controls
