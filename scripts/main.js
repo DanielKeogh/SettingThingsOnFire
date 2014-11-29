@@ -1,34 +1,14 @@
-// Imports
-
-
-
-// Map Setup.
-
+//Map Constants & Vars
 var wind = {type: "wind", speed: 200, direction: 270};
-
 var fireManSize = 5;
 var fireManRange = 35;
-
-var fps = 60;
-
-var mapInit = [
-    //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
-    //{type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
-    //{type: "tony"}
-];
- 
+var fps = 60; 
 var stage;
-
 var canvas;
-
 var flamables = [];
-
 var firemen = [];
-
 var clickMode = "noEvent";
-
 var particleImage;
-
 var fundText;
 
 function loadAssets() {
@@ -39,10 +19,10 @@ function loadAssets() {
 function init() {
     canvas = document.getElementById("fireCanvas");
     
-    increaseDifficulty();
-    increaseDifficulty();
-    increaseDifficulty();
-    increaseDifficulty();
+   // increaseDifficulty();
+    //increaseDifficulty();
+    //increaseDifficulty();
+    //increaseDifficulty();
     
     mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
     
@@ -412,7 +392,7 @@ function tick(event) {
     
     stage.removeChild(bombArc);
     if(clickMode == "dropWater") handleDropWaterHover();
-    fundText.text = "Funds: " + funds;
+    fundText.text = "Funds: " + player.funds;
     
     //Count down
     if(countdown != null)
