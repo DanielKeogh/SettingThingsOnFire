@@ -242,9 +242,9 @@ function considerDying(flamable) {
 }
 
 function tick(event) {
-   // spreadFire(flamables, wind, event);
+    spreadFire(flamables, wind, event);
     
-    for(i = 0; i < flamables.length; i++) {
+    for(var i = 0; i < flamables.length; i++) {
 	var flamable = flamables[i];
 
 	if(roll) {

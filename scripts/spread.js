@@ -7,7 +7,7 @@ var burnHalfWidth = 30;
 
 function getDistance(point0, point1)
 {
-  return Math.sqrt(Math.pow(element.x - burner.x, 2) + Math.pow(element.y - burner.y, 2));
+  return Math.sqrt(Math.pow(point0.x - point1.x, 2) + Math.pow(point0.y - point1.y, 2));
 }
 
 // Determine if an element is in the surrounding area of a burner
@@ -15,7 +15,7 @@ function isInSurrounding(burner, element)
 {
   // Determine the distance between the burner and the burnee. If it's too close it'll burn
   var distance = getDistance(burner, element);
-  return distance < burner.radius * 2;
+  return distance < burner.radius * 5;
 }
 
 // Determine what'll be the damage done to the element being burnt
@@ -53,46 +53,47 @@ function determineZone(burner, element, wind)
 // Performs the burning of the trees in the vicinity of a burning tree
 function burnSurrounding(burner, elements, wind, delta)
 {
-  for(i = 0; i < elements.length; ++ i)
-  {
-    // No need to burn an element that's already burning
-    if(element.burning >= 100) continue;
-
-    var zone = determineZone(burner, elements[i], wind);
-
-    switch(zone)
+    for(var i = 0; i < elements.length; ++ i)
     {
-      case -1:
-        break;
-      case 0:
-        element.burning += zone0Burn * delta;
-        break;
-      case 1:
-        element.burning += zone1Burn * delta;
-        break;
-      case 2:
-        element.burning += zone2Burn * delta;
-        break;
-      default:
-        break;
+	var element = elements[i];
+	var zone = determineZone(burner, elements[i], wind);
+	switch(zone)
+	{
+	    case -1:
+            break;
+	    
+	    case 0:
+            element.burning += zone0Burn * delta;
+            break;
+	    
+	    case 1:
+            element.burning += zone1Burn * delta;
+            break;
+	    
+	    case 2:
+            element.burning += zone2Burn * delta;
+            break;
+	    
+	    default:
+            break;
+	}
+	
+	if(isInSurrounding(burner, element))
+	{
+	    element.burning += delta * 50;
+	}
     }
-
-    if(isInSurrounding(burner, element))
-    {
-      element.burning += surroundingPenalty * delta;
-    }
-  }
 }
 
 // Performs the spreading of the fire when a whole bunch of trees are burning
 function spreadFire(flamables, wind, applicationEvent)
 {
-  for(i = 0; i < flamables.length; ++ i)
+  for(var i = 0; i < flamables.length; ++ i)
   {
     // Determine the set trees that are burning
     if(flamables[i].type == "tree" &&
        flamables[i].burning >= 100 &&
-       flamables.health > 0)
+       flamables[i].health > 0)
     {
       // Burn the surroundings and apply the decay
       burnSurrounding(flamables[i], flamables, wind, applicationEvent.delta);
