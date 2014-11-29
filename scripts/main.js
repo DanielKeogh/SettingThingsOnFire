@@ -40,12 +40,8 @@ function init() {
     
     mapInit = map6;
 	
-    // Add background
-    var background = new createjs.Shape();
-    background.x = 0;
-    background.y = 0;
-    background.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
-    stage.addChild(background);
+    // Add background   
+    stage.addChild(createBackground());
     
     // Setup controls
 
@@ -76,6 +72,14 @@ function init() {
 
     createjs.Ticker.on("tick", tick);
     createjs.Ticker.setFPS(60);
+}
+
+function createBackground() {
+	var background = new createjs.Shape();
+    background.x = 0;
+    background.y = 0;
+    background.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+	return background;
 }
 
 // Action Logic
