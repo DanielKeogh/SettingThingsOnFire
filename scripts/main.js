@@ -27,7 +27,7 @@ function init() {
 	
     stage = new createjs.Stage(canvas);
     
-    mapInit = map2;
+    mapInit = map6;
 
     // Add background
     var background = new createjs.Shape();
@@ -238,7 +238,7 @@ function updateGraphics(flamable) {
 		if(flamable.burning > 99) {
 			houseColour = "brown";
 		}
-		if(flamable.health < 20) {
+		if(flamable.health < 100) {
 			houseColour = "black";
 		}
 		
