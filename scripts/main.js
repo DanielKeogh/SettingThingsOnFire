@@ -29,32 +29,20 @@ function resetGameState() {
 
 function init() {
   resetGameState();
-  
-	canvas = document.getElementById("fireCanvas");
-  cachedEmitter = makeParticleEmitter(0, 0);
   clickMode = "noEvent";
-
-	 //increaseDifficulty();
 
 	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, stage.canvas.width, stage.canvas.height);
   housesAlive = difficulty.houseNumber;
   burningTrees = difficulty.startingFireCount;
 
 	// Add background
-	stage.addChild(createBackground());
+	stage.addChild(gameBackground);
 
 	// Setup controls
-	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0, 200);
-	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 0, 200);
-	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 0, 200);
-  
-  if (player.debug) {
-    var xLoc = stage.canvas.width - 100;
-    addModeButton("addTree", "Add Tree", xLoc, 100, 100);
-    addModeButton("addHouse", "Add House", xLoc, 140, 100);
-    addModeButton("addFire", "Burn Things", xLoc, 180, 100);
-    addModeButton("getMap", "Get Map", xLoc, 220, 100);
-  }  
+  for(var i = 0; i < actionButtons.length; ++ i)
+  {
+    stage.addChild(actionButtons[i]);
+  }
 	
 	fundText = new createjs.Text("Funds: " + player.funds, "bold 15px Arial", "yellow");
 	fundText.x = 5;
@@ -81,17 +69,7 @@ function init() {
 
 	performCountdown(player.preparationTime, getStartTheFire(difficulty.startingFireCount));
 
-	stage.on("click", handleStageClick);
   currentContext = "game";
-	stage.update();
-}
-
-function createBackground() {
-	var background = new createjs.Shape();
-	background.x = 0;
-	background.y = 0;
-	background.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
-	return background;
 }
 
 // Action Logic
@@ -177,49 +155,6 @@ function addTree(treebase) {
 
 	stage.addChild(tree);
 	flamables[flamables.length] = tree;
-}
-
-function addModeButton(modeName, name, x, y, xSize) {
-	var button = new createjs.Container();
-	button.x = x;
-	button.y = y;
-
-	var buttonShape = new createjs.Shape();
-	buttonShape.graphics.beginFill("pink").drawRect(0, 0, xSize, 30);
-  
-  var buttonOutline = new createjs.Shape();
-	buttonOutline.graphics.setStrokeStyle(5).beginStroke("red").drawRect(0, 0, xSize, 30);
-  buttonOutline.visible = false;
-
-	button.addEventListener("click", function (evt) {
-    if (clickMode != modeName) {
-      clickMode = modeName;
-    }
-    else {
-      clickMode = "noEvent";
-    }
-    var originalVisibility = buttonOutline.visible;    
-    changeVisibilityOfButtonOutlines();    
-    buttonOutline.visible = !originalVisibility;
-	});
-
-	var text = new createjs.Text(name, "bold 15px Arial", "red");
-	text.x = 5;
-	text.y = 5;
-    
-	button.addChild(buttonShape);
-  button.addChild(buttonOutline);
-	button.addChild(text);
-  buttons[buttons.length] = button;
-	stage.addChild(button);
-}
-
-function changeVisibilityOfButtonOutlines() {
-  for (i = 0; i < buttons.length; i++) {
-			var button = buttons[i];
-			var outline = button.getChildAt(1);
-      outline.visible = false;
-		}
 }
 
 function handleDropFireMan(x, y) {
@@ -404,7 +339,7 @@ function updateBurning(flamable) {
       }
 		}
 
-		flamable.health -= flamable.burning * 10 / 100; // Consider, using log to suppress fire.
+		flamable.health -= flamable.burning / 100; // Consider, using log to suppress fire.
 	} else
   {
     if(flamable.emitter != null)
@@ -436,6 +371,9 @@ function tick(event) {
       break;
     case "game":
       gameTick(event);
+      break;
+    default:
+      stage.update();
       break;
   }
 }
