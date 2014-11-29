@@ -4,7 +4,7 @@
 
 // Map Setup.
 
-var wind = {type: "wind", speed: 25, direction: 270};
+var wind = {type: "wind", speed: 600, direction: 90};
 
 var fireManSize = 5;
 

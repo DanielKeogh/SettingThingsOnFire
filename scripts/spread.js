@@ -1,8 +1,8 @@
 // Difficulty configuration
 var surroundingPenalty = 0.05;
-var zone0Burn = 5;
-var zone1Burn = 3;
-var zone2Burn = 1;
+var zone0Burn = 200;
+var zone1Burn = 200;
+var zone2Burn = 200;
 var burnHalfWidth = 30;
 
 function getDistance(point0, point1)
