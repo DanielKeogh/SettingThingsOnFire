@@ -44,7 +44,7 @@ function init() {
     var background = new createjs.Shape();
     background.x = 0;
     background.y = 0;
-    background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+    background.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
     stage.addChild(background);
     
     // Setup controls
@@ -149,7 +149,7 @@ function addTree(treebase) {
     tree.type = "tree";
 
     var circle = new createjs.Shape();
-    circle.graphics.beginFill("green").drawCircle(0, 0, tree.radius);
+    circle.graphics.beginFill("#335500").drawCircle(0, 0, tree.radius);
     tree.addChild(circle);
     
     tree.addEventListener("click", makeFlamableHandler(tree));
@@ -184,6 +184,7 @@ function handleDropFireMan(x, y) {
 	if (decreaseFunds(fireManCost)) {
 		var fireman = new createjs.Shape();
 		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
+		fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize/2);
 		fireman.x = x;
 		fireman.y = y;
 		
