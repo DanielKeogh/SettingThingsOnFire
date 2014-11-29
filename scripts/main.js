@@ -7,7 +7,7 @@
 var wind = {type: "wind", speed: 200, direction: 270};
 
 var fireManSize = 5;
-var fireManRange = 40;
+var fireManRange = 35;
 
 var fps = 60;
 
