@@ -4,7 +4,7 @@
 
 // Map Setup.
 
-var wind = {type: "wind", speed: 600, direction: 90};
+var wind = {type: "wind", speed: 90, direction: 270};
 
 var fireManSize = 5;
 
@@ -86,7 +86,6 @@ function removeFlamable(flamable){
 	flamables.splice(index, 1);
     }
     stage.removeChild(flamable);
-    console.log("Removing " + flamable.type);
 }
 
 function addHouse(housebase) {
@@ -147,7 +146,6 @@ function addModeButton(modeName, name, x, y) {
 
     button.addEventListener("click", function(evt) {
 	clickMode = modeName;
-	console.log(modeName);
     });
 
     var text = new createjs.Text(name, "bold 15px Arial", "red");
@@ -203,7 +201,7 @@ function handleStageClick(evt) {
 	    }
 	}
 
-	mapLog = mapLog.concat("];");
+  mapLog = mapLog.concat("];");
 	console.log(mapLog);
     }
 }
