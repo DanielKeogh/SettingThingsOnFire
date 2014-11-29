@@ -40,6 +40,7 @@ function treeCollidesWithExisting(base, flamables) {
 function generateMap(housecount, treecount, stagewidth, stageheight) {
   
   wind.direction = Math.floor((Math.random() * 360) + 1);
+  wind.speed = Math.random() * 40 + 20;
   
 	// Make the houses
 	var mapInit = [];

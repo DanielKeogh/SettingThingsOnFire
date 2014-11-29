@@ -3,8 +3,8 @@ var costs = { fireManCost: 600, cutTreeCost: 50, cutTreeCostFactor: 2, waterBomb
 var player = { debug: false, funds: 10000, roundNumber: 1, preparationTime: 20 };
 var wind = {
 	type : "wind",
-	speed : 200,
-	direction : 270
+	speed : 0,
+	direction : 0
 };
 
 function increaseDifficulty() {
