@@ -1,32 +1,14 @@
-// Imports
-
-
-
-// Map Setup.
-
+//Map Constants & Vars
 var wind = {type: "wind", speed: 200, direction: 270};
-
 var fireManSize = 5;
 var fireManRange = 35;
-
-var fps = 60;
-
-var mapInit = [
-    //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
-    //{type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
-    //{type: "tony"}
-];
- 
+var fps = 60; 
 var stage;
-
+var canvas;
 var flamables = [];
-
 var firemen = [];
-
 var clickMode = "noEvent";
-
 var particleImage;
-
 var fundText;
 
 function loadAssets() {
@@ -35,9 +17,14 @@ function loadAssets() {
 }
 
 function init() {
-    var canvas = document.getElementById("fireCanvas");
+    canvas = document.getElementById("fireCanvas");
     
-    mapInit = generateMap(4, 300, canvas.width, canvas.height);
+   // increaseDifficulty();
+    //increaseDifficulty();
+    //increaseDifficulty();
+    //increaseDifficulty();
+    
+    mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
     
     // Add background   
     stage.addChild(createBackground());
@@ -53,7 +40,7 @@ function init() {
     addModeButton("getMap", "Get Map", 660, 0);
     //addModeButton("tonyAbbot", "Prime Minister", 600, 0);
 
-    fundText = new createjs.Text("Funds: " + funds, "bold 15px Arial", "yellow");
+    fundText = new createjs.Text("Funds: " + difficulty.funds, "bold 15px Arial", "yellow");
     fundText.x = 5;
     fundText.y = stage.canvas.height - 15;
 
@@ -102,7 +89,7 @@ function makeFlamableHandler(flamable) {
 }
 
 function removeTree(flamable) {
-  if (decreaseFunds(cutTreeCost)) {
+  if (decreaseFunds(difficulty.cutTreeCost)) {
      removeFlamable(flamable);
   }
 }
@@ -177,7 +164,7 @@ function addModeButton(modeName, name, x, y) {
     buttonShape.graphics.beginFill("pink").drawRect(0, 0, 100, 30);
 
     button.addEventListener("click", function(evt) {
-  clickMode = modeName;
+      clickMode = modeName;
     });
 
     var text = new createjs.Text(name, "bold 15px Arial", "red");
@@ -190,7 +177,7 @@ function addModeButton(modeName, name, x, y) {
 }
 
 function handleDropFireMan(x, y) {
-	if (decreaseFunds(fireManCost)) {
+	if (decreaseFunds(difficulty.fireManCost)) {
 		var container = new createjs.Container();
     
 		var fireman = new createjs.Shape();
@@ -247,6 +234,9 @@ function handleStageClick(evt) {
 
       mapLog = mapLog.concat("];");
       console.log(mapLog);
+      break;
+    case "dropWater":
+      handleDropWaterClick(x, y, flamables);
       break;
   }
 }
@@ -397,10 +387,14 @@ function tick(event) {
   updateBurning(flamable);
   updateGraphics(flamable, event);
   considerDying(flamable, event);
-    }    
+    } 
     
-    fundText.text = "Funds: " + funds;
-
+    fundText.text = "Funds: " + player.funds;
+    
+    stage.removeChild(bombArc);
+    if(clickMode == "dropWater") handleDropWaterHover();
+    fundText.text = "Funds: " + player.funds;
+    
     //Count down
     if(countdown != null)
     {
@@ -413,7 +407,6 @@ function tick(event) {
 	    countdown = null;
 	}
     }
-   
     stage.update(event);
 }
 
