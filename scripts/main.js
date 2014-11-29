@@ -27,14 +27,15 @@ function init() {
 
 	// Setup controls
 	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0);
-	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 110, 0);
-	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + cutTreeCostFactor "* size", 220, 0);
+	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 250, 0);
+	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 400, 0);
   
   if (player.debug) {
-    addModeButton("addTree", "Add Tree", 330, 0);
-    addModeButton("addHouse", "Add House", 440, 0);
-    addModeButton("addFire", "Burn Things", 550, 0);
-    addModeButton("getMap", "Get Map", 660, 0);
+    var xLoc = stage.canvas.width - 100;
+    addModeButton("addTree", "Add Tree", xLoc, 100);
+    addModeButton("addHouse", "Add House", xLoc, 140);
+    addModeButton("addFire", "Burn Things", xLoc, 180);
+    addModeButton("getMap", "Get Map", xLoc, 220);
   }  
 	
 	fundText = new createjs.Text("Funds: " + player.funds, "bold 15px Arial", "yellow");
