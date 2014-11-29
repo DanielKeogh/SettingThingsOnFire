@@ -211,7 +211,7 @@ function firemanHoverHandleEvt(evt) {
 	if (evt.type == "rollover") {
 		var arcShape = new createjs.Shape();
 		arcShape.beginStroke("blue");
-		arcShape.graphics.arc(container.x, container.y, fireManRange, 0, Math.PI*2);
+		arcShape.graphics.arc(0, 0, fireManRange, 0, Math.PI*2);
 		container.addChild(arcShape);
 	}
 	else if (evt.type == "rollout") {
