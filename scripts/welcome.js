@@ -20,6 +20,7 @@ function welcome()
 
   playButton.on("click", function(evt){
     createjs.Ticker.off("tick", welcomeTick);
+    stage.clear();
     init();
   });
 

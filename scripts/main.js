@@ -36,16 +36,9 @@ function init() {
     
     //Menu goes here:
     
-    stage = new createjs.Stage(canvas);
+    //stage = new createjs.Stage(canvas);
     
     mapInit = generateMap(4, 300, canvas.width, canvas.height);
-    
-    // Add background
-    var background = new createjs.Shape();
-    background.x = 0;
-    background.y = 0;
-    background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
-    stage.addChild(background);
     
     // Add background   
     stage.addChild(createBackground());

@@ -1,7 +1,7 @@
 
-var funds = 5000;
-var fireManCost = 400;
-var cutTreeCost = 750;
+var funds = 10000;
+var fireManCost = 600;
+var cutTreeCost = 400;
 
 function decreaseFunds(amountToDecrease, forceNegative) {
 	var success = false
