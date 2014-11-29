@@ -389,8 +389,6 @@ function tick(event) {
   considerDying(flamable, event);
     } 
     
-    fundText.text = "Funds: " + player.funds;
-    
     stage.removeChild(bombArc);
     if(clickMode == "dropWater") handleDropWaterHover();
     fundText.text = "Funds: " + player.funds;
