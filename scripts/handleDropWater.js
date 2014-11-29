@@ -7,7 +7,7 @@ function handleDropWaterClick(x, y, flamables)
   {
     if(getDistance({x: x, y: y}, flamables[i]) < waterBombRadius)
     {
-      flamables[i].burning = Math.min(flamables[i].burning - 150, 0);
+      flamables[i].burning = Math.max(flamables[i].burning - 150, 0);
     }
   }
 }
