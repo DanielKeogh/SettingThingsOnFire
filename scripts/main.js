@@ -4,7 +4,7 @@
 
 // Map Setup.
 
-var wind = {type: "wind", speed: 90, direction: 270};
+var wind = {type: "wind", speed: 200, direction: 270};
 
 var fireManSize = 5;
 var fireManRange = 20;
@@ -35,18 +35,7 @@ function loadAssets() {
 function init() {
     var canvas = document.getElementById("fireCanvas");
     
-    //Menu goes here:
-    
-    stage = new createjs.Stage(canvas);
-    
     mapInit = generateMap(4, 300, canvas.width, canvas.height);
-    
-    // Add background
-    var background = new createjs.Shape();
-    background.x = 0;
-    background.y = 0;
-    background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
-    stage.addChild(background);
     
     // Add background   
     stage.addChild(createBackground());
@@ -70,15 +59,15 @@ function init() {
     
     // Add objects
     for(i = 0; i < mapInit.length; i++) {
-		if(mapInit[i].type == "tree")
-		{
-			addTree(mapInit[i]);
-		}
+      if(mapInit[i].type == "tree")
+      {
+          addTree(mapInit[i]);
+      }
 
-		if(mapInit[i].type == "house")
-		{
-			addHouse(mapInit[i]);
-		}
+      if(mapInit[i].type == "house")
+      {
+          addHouse(mapInit[i]);
+      }
     }
 
     stage.on("click", handleStageClick);
@@ -89,36 +78,36 @@ function init() {
 }
 
 function createBackground() {
-	var background = new createjs.Shape();
+  var background = new createjs.Shape();
     background.x = 0;
     background.y = 0;
     background.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
-	return background;
+  return background;
 }
 
 // Action Logic
 
 function makeFlamableHandler(flamable) {
     return function(evt){
-	if(clickMode == "removeTree") {
-	   removeTree(flamable);
-	} else if (clickMode == "addFire") {
-	    flamable.burning += 100;
-	}
+  if(clickMode == "removeTree") {
+     removeTree(flamable);
+  } else if (clickMode == "addFire") {
+      flamable.burning += 100;
+  }
     }
 }
 
 function removeTree(flamable) {
-	if (decreaseFunds(cutTreeCost)) {
-		 removeFlamable(flamable);
-	}
+  if (decreaseFunds(cutTreeCost)) {
+     removeFlamable(flamable);
+  }
 }
 
 function removeFlamable(flamable){
     flamable.removeAllEventListeners();
     var index = flamables.indexOf(flamable);
     if(index > -1) {
-	flamables.splice(index, 1);
+  flamables.splice(index, 1);
     }
     stage.removeChild(flamable);
 }
@@ -132,7 +121,7 @@ function addFlamable(base){
     container.startingHealth = 500;
     container.health = 500;
     container.emitter = null;
-	container.died = false;
+  container.died = false;
 
     return container;
 }
@@ -148,11 +137,11 @@ function addHouse(housebase) {
     rectangle.graphics.beginFill("blue").drawRect(0, 0, housebase.width, housebase.height);
     
     house.addEventListener("click", function(evt) {
-	if(clickMode == "removeTree") {
-	    removeFlamable(house);
-	}
+  if(clickMode == "removeTree") {
+      removeFlamable(house);
+  }
     });
-	
+  
     house.addChild(rectangle);
     
     stage.addChild(house);
@@ -184,7 +173,7 @@ function addModeButton(modeName, name, x, y) {
     buttonShape.graphics.beginFill("pink").drawRect(0, 0, 100, 30);
 
     button.addEventListener("click", function(evt) {
-	clickMode = modeName;
+  clickMode = modeName;
     });
 
     var text = new createjs.Text(name, "bold 15px Arial", "red");
@@ -227,46 +216,44 @@ function firemanHoverHandleEvt(evt) {
 }
 
 function handleStageClick(evt) {
-    if(evt.stageY < 30) {
-	return;
-    }
-    var x = evt.stageX;
-    var y = evt.stageY;
-    
-    if(clickMode == "dropFireMan")
-    {
-		handleDropFireMan(x, y);	
-    }
-    else if(clickMode == "addTree")
-    {
-	var randTreeRadius = Math.round(Math.random() * 10 + 2);
-	addTree({x: x, y: y, radius: randTreeRadius});
-    }
-    else if(clickMode == "addHouse")
-    {
-	var randomHouseWidth = Math.round(Math.random() * 4 + 3) * 5;
-	var randomHouseHeight = Math.round(Math.random() * 3 + 3) * 5;
-	addHouse({x: x, y: y, width: randomHouseWidth, height: randomHouseHeight});
-    }
-    else if(clickMode == "getMap")
-    {
-	var mapLog = "var map = [";
-	for(i = 0; i < flamables.length; i++)
-	{
-	    var flamable = flamables[i];
-	    if(flamable.type == "tree")
-	    {
-		mapLog = mapLog.concat("{type: \"tree\", x: " + flamable.x + ", y: " + flamable.y + " , radius: " + flamable.radius +  ", health:100, burning: 0},");
-	    }
-	    else if (flamable.type == "house")
-	    {
-		mapLog = mapLog.concat("{type: \"house\", x: " + flamable.x + ", y: " + flamable.y + ", width: " + flamable.width + " , height: " + flamable.height + " , health:100, burning: 0},");
-	    }
-	}
+  if(evt.stageY < 30) {
+    return;
+  }
+  var x = evt.stageX;
+  var y = evt.stageY;
 
-  mapLog = mapLog.concat("];");
-	console.log(mapLog);
-    }
+  switch(clickMode){
+    case "dropFireMan":
+      handleDropFireMan(x, y);  
+      break;
+    case "addTree":
+      var randTreeRadius = Math.round(Math.random() * 10 + 2);
+      addTree({x: x, y: y, radius: randTreeRadius});
+      break;
+    case "addHouse":
+      var randomHouseWidth = Math.round(Math.random() * 4 + 3) * 5;
+      var randomHouseHeight = Math.round(Math.random() * 3 + 3) * 5;
+      addHouse({x: x, y: y, width: randomHouseWidth, height: randomHouseHeight});
+      break;
+    case "getMap":
+      var mapLog = "var map = [";
+      for(i = 0; i < flamables.length; i++)
+      {
+        var flamable = flamables[i];
+        if(flamable.type == "tree")
+        {
+          mapLog = mapLog.concat("{type: \"tree\", x: " + flamable.x + ", y: " + flamable.y + " , radius: " + flamable.radius +  ", health:100, burning: 0},");
+        }
+        else if (flamable.type == "house")
+        {
+          mapLog = mapLog.concat("{type: \"house\", x: " + flamable.x + ", y: " + flamable.y + ", width: " + flamable.width + " , height: " + flamable.height + " , health:100, burning: 0},");
+        }
+      }
+
+      mapLog = mapLog.concat("];");
+      console.log(mapLog);
+      break;
+  }
 }
 
 // Game Logic
@@ -277,31 +264,31 @@ function handleStageClick(evt) {
 
 function updateGraphics(flamable) {
     if(flamable.type == "tree") {
-		var circle = flamable.getChildAt(0);
-		var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
-		circle.graphics.clear();
-		
-		var treeColour = "green";
-		if(flamable.burning > 99) {
-			treeColour = "red";
-		}
-
-		circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
+    var circle = flamable.getChildAt(0);
+    var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
+    circle.graphics.clear();
+    
+    var treeColour = "green";
+    if(flamable.burning > 99) {
+      treeColour = "red";
     }
-	else if (flamable.type == "house") {
-		var rectangle = flamable.getChildAt(0);
-		rectangle.graphics.clear();
-	
-		var houseColour = "blue";
-		if(flamable.burning > 99) {
-			houseColour = "brown";
-		}
-		if(flamable.health < 100) {
-			houseColour = "black";
-		}
-		
-		rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
-	}	
+
+    circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
+    }
+  else if (flamable.type == "house") {
+    var rectangle = flamable.getChildAt(0);
+    rectangle.graphics.clear();
+  
+    var houseColour = "blue";
+    if(flamable.burning > 99) {
+      houseColour = "brown";
+    }
+    if(flamable.health < 100) {
+      houseColour = "black";
+    }
+    
+    rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
+  }  
 }
 
 function makeParticleEmitter(x, y) {
@@ -342,10 +329,10 @@ function makeParticleEmitter(x, y) {
 }
 
 function rgb(r, g, b){
-	r = Math.floor(r);
-	g = Math.floor(g);
-	b = Math.floor(b);
-	return ["rgb(",r,",",g,",",b,")"].join("");
+  r = Math.floor(r);
+  g = Math.floor(g);
+  b = Math.floor(b);
+  return ["rgb(",r,",",g,",",b,")"].join("");
 }
 
 // Game Loop
@@ -354,18 +341,18 @@ var cachedEmitter;
 
 function updateBurning(flamable) {
     if (flamable.burning > 99) {
-	if(cachedEmitter == null)
-	{
-	    cachedEmitter = makeParticleEmitter(0, 0);
-	}
-	
-	if(flamable.emitter == null)
-	{
-	    flamable.addChild(cachedEmitter);
-	    flamable.emitter = cachedEmitter;
-	}
-	
-	flamable.health -= flamable.burning / 100; // Consider, using log to suppress fire.
+  if(cachedEmitter == null)
+  {
+      cachedEmitter = makeParticleEmitter(0, 0);
+  }
+  
+  if(flamable.emitter == null)
+  {
+      flamable.addChild(cachedEmitter);
+      flamable.emitter = cachedEmitter;
+  }
+  
+  flamable.health -= flamable.burning / 100; // Consider, using log to suppress fire.
     }
 }
 
@@ -384,15 +371,15 @@ function tick(event) {
     spreadFire(flamables, wind, event);
     
     for(var i = 0; i < flamables.length; i++) {
-	var flamable = flamables[i];
+  var flamable = flamables[i];
 
-	if(roll) {
-	    flamable.x = (flamable.x + (event.delta)/1000*100) % stage.canvas.width;
-	}
-	
-	updateBurning(flamable);
-	updateGraphics(flamable, event);
-	considerDying(flamable, event);
+  if(roll) {
+      flamable.x = (flamable.x + (event.delta)/1000*100) % stage.canvas.width;
+  }
+  
+  updateBurning(flamable);
+  updateGraphics(flamable, event);
+  considerDying(flamable, event);
     }    
 
     fundText.text = "Funds: " + funds;
