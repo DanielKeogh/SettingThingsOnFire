@@ -26,16 +26,16 @@ function init() {
 	stage.addChild(createBackground());
 
 	// Setup controls
-	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0);
-	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 250, 0);
-	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 400, 0);
+	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0, 200);
+	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 0, 200);
+	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 0, 200);
   
   if (player.debug) {
     var xLoc = stage.canvas.width - 100;
-    addModeButton("addTree", "Add Tree", xLoc, 100);
-    addModeButton("addHouse", "Add House", xLoc, 140);
-    addModeButton("addFire", "Burn Things", xLoc, 180);
-    addModeButton("getMap", "Get Map", xLoc, 220);
+    addModeButton("addTree", "Add Tree", xLoc, 100, 100);
+    addModeButton("addHouse", "Add House", xLoc, 140, 100);
+    addModeButton("addFire", "Burn Things", xLoc, 180, 100);
+    addModeButton("getMap", "Get Map", xLoc, 220, 100);
   }  
 	
 	fundText = new createjs.Text("Funds: " + player.funds, "bold 15px Arial", "yellow");
@@ -160,13 +160,13 @@ function addTree(treebase) {
 	flamables[flamables.length] = tree;
 }
 
-function addModeButton(modeName, name, x, y) {
+function addModeButton(modeName, name, x, y, xSize) {
 	var button = new createjs.Container();
 	button.x = x;
 	button.y = y;
 
 	var buttonShape = new createjs.Shape();
-	buttonShape.graphics.beginFill("pink").drawRect(0, 0, 100, 30);
+	buttonShape.graphics.beginFill("pink").drawRect(0, 0, xSize, 30);
 
 	button.addEventListener("click", function (evt) {
 		clickMode = modeName;
