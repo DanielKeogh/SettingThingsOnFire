@@ -8,6 +8,7 @@ function losersProtocol()
 {
   welcome();
   stage.removeChild(bombArc);
+  stage.removeChild(firemanArc);
 }
 
 // Determine what to do when a round has ended

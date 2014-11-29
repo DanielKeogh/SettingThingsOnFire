@@ -60,7 +60,6 @@ function init() {
   // Set the texts on the action buttons:
   for(var i = 0; i < actionButtons.length; ++ i)
   {
-    console.log(actionButtons[i].name);
     var newText = "";
     switch(actionButtons[i].name)
     {
@@ -177,26 +176,6 @@ function addTree(treebase) {
 
 	stage.addChild(tree);
 	flamables[flamables.length] = tree;
-}
-
-function handleDropFireMan(x, y) {
-	if (decreaseFunds(costs.fireManCost)) {
-		var container = new createjs.Container();
-
-		var fireman = new createjs.Shape();
-		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
-		fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize / 2);
-		var arcShape = new createjs.Shape();
-		arcShape.graphics.beginStroke("rgba(0, 0, 240, 1)").arc(0, 0, difficulty.fireManRange, 0, Math.PI * 2);
-		arcShape.graphics.beginFill("rgba(0, 0, 240, 0.3)").drawCircle(0, 0, difficulty.fireManRange);
-		container.addChild(arcShape);
-		container.addChild(fireman);
-		container.x = x;
-		container.y = y;
-
-		firemen[firemen.length] = container;
-		stage.addChild(container);
-	}
 }
 
 function handleStageClick(evt) {
@@ -423,8 +402,14 @@ function gameTick(event)
 	}
 
 	stage.removeChild(bombArc);
+  stage.removeChild(firemanArc);
 	if (clickMode == "dropWater")
+  {
 		handleDropWaterHover();
+  } else if (clickMode == "dropFireMan")
+  {
+    handleFiremanHover();
+  }
 	fundText.text = "Funds: " + player.funds;
 
 	//Count down
