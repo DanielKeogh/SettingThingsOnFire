@@ -44,9 +44,9 @@ function init() {
 	stage.addChild(createBackground());
 
 	// Setup controls
-	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0, 200);
-	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 0, 200);
-	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 0, 200);
+	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 7, 200);
+	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 7, 200);
+	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 7, 200);
   
   if (player.debug) {
     var xLoc = stage.canvas.width - 100;
@@ -197,7 +197,7 @@ function addModeButton(modeName, name, x, y, xSize) {
 	buttonShape.graphics.beginFill("pink").drawRect(0, 0, xSize, 30);
   
   var buttonOutline = new createjs.Shape();
-	buttonOutline.graphics.beginStroke("red").drawRect(0, 0, xSize, 30);
+	buttonOutline.graphics.setStrokeStyle(5).beginStroke("red").drawRect(0, 0, xSize, 30);
   buttonOutline.visible = false;
 
 	button.addEventListener("click", function (evt) {
@@ -413,7 +413,7 @@ function updateBurning(flamable) {
       }
 		}
 
-		flamable.health -= flamable.burning / 100; // Consider, using log to suppress fire.
+		flamable.health -= flamable.burning * 10 / 100; // Consider, using log to suppress fire.
 	} else
   {
     if(flamable.emitter != null)
@@ -428,7 +428,7 @@ function considerDying(flamable) {
 	if (!flamable.died && flamable.health < 0) {
 		if (flamable.type == "house") {
       --housesAlive;
-			flamable.died = decreaseFunds(1000, true);
+			flamable.died = decreaseFunds(costs.houseCost, true);
       removeFlamable(flamable, false);
 		} else {
       --burningTrees;
@@ -468,7 +468,7 @@ function gameTick(event)
 
 		updateBurning(flamable);
 		updateGraphics(flamable, event);
-		considerDying(flamable, event);
+		considerDying(flamable);
 	}
 
 	stage.removeChild(bombArc);
