@@ -188,7 +188,7 @@ function addModeButton(modeName, name, x, y, xSize) {
 	buttonShape.graphics.beginFill("pink").drawRect(0, 0, xSize, 30);
   
   var buttonOutline = new createjs.Shape();
-	buttonOutline.graphics.beginStroke("red").drawRect(0, 0, xSize, 30);
+	buttonOutline.graphics.setStrokeStyle(5).beginStroke("red").drawRect(0, 0, xSize, 30);
   buttonOutline.visible = false;
 
 	button.addEventListener("click", function (evt) {
