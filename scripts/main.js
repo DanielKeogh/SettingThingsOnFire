@@ -22,7 +22,7 @@ var firemen = [];
 
 var clickMode = "dropFireMan";
 
-function init() {
+function initMap() {
     var canvas = document.getElementById("fireCanvas");
 	
     stage = new createjs.Stage(canvas);
