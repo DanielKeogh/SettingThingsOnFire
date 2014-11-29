@@ -26,14 +26,17 @@ function init() {
 	stage.addChild(createBackground());
 
 	// Setup controls
-	addModeButton("dropFireMan", "Firemen", 0, 0);
-	addModeButton("dropWater", "Water Bomb", 110, 0);
-	addModeButton("removeTree", "Chop Tree", 220, 0);
-	addModeButton("addTree", "Add Tree", 330, 0);
-	addModeButton("addHouse", "Add House", 440, 0);
-	addModeButton("addFire", "Burn Things", 550, 0);
-	addModeButton("getMap", "Get Map", 660, 0);
-
+	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0);
+	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 110, 0);
+	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + cutTreeCostFactor "* size", 220, 0);
+  
+  if (player.debug) {
+    addModeButton("addTree", "Add Tree", 330, 0);
+    addModeButton("addHouse", "Add House", 440, 0);
+    addModeButton("addFire", "Burn Things", 550, 0);
+    addModeButton("getMap", "Get Map", 660, 0);
+  }  
+	
 	fundText = new createjs.Text("Funds: " + player.funds, "bold 15px Arial", "yellow");
 	fundText.x = 5;
 	fundText.y = stage.canvas.height - 15;
