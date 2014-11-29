@@ -239,7 +239,7 @@ function tick(event) {
 	var flamable = flamables[i];
 
 	if(roll) {
-	    flamables.x = (flamables.x + (event.delta)/1000*100) % stage.canvas.width;
+	    flamable.x = (flamable.x + (event.delta)/1000*100) % stage.canvas.width;
 	}
 	
 	updateBurning(flamable);
