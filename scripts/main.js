@@ -9,11 +9,11 @@ var wind = {type: "wind", speed: 3, direction: 270};
 var fireManSize = 5;
 
 var mapInit = [
-    {type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
-    {type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
-    {type: "tony"}
- ];
-
+    //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
+    //{type: "house", x: 70, y: 70, width: 100, height: 100, health:100, burning: 0},
+    //{type: "tony"}
+];
+ 
 var stage;
 
 var flamables = [];
@@ -26,6 +26,8 @@ function init() {
     var canvas = document.getElementById("fireCanvas");
     stage = new createjs.Stage(canvas);
     
+    mapInit = map2;
+
     // Add background
     var background = new createjs.Shape();
     background.x = 0;
@@ -133,7 +135,7 @@ function addModeButton(modeName, name, x, y) {
     var buttonShape = new createjs.Shape();
     buttonShape.graphics.beginFill("pink").drawRect(0, 0, 100, 30);
 
-    buttonShape.addEventListener("click", function(evt) {
+    button.addEventListener("click", function(evt) {
 	clickMode = modeName;
 	console.log(modeName);
     });
@@ -166,13 +168,13 @@ function handleStageClick(evt) {
     }
     else if(clickMode == "addTree")
     {
-	var randTreeRadius = Math.round(Math.random() * 13 + 7);
+	var randTreeRadius = Math.round(Math.random() * 10 + 2);
 	addTree({x: x, y: y, radius: randTreeRadius});
     }
     else if(clickMode == "addHouse")
     {
-	var randomHouseWidth = Math.round(Math.random() * 5 + 5) * 10;
-	var randomHouseHeight = Math.round(Math.random() * 5 + 5) * 10;
+	var randomHouseWidth = Math.round(Math.random() * 4 + 3) * 5;
+	var randomHouseHeight = Math.round(Math.random() * 3 + 3) * 5;
 	addHouse({x: x, y: y, width: randomHouseWidth, height: randomHouseHeight});
     }
     else if(clickMode == "getMap")
