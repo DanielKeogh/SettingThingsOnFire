@@ -96,7 +96,6 @@ function spreadFire(flamables, wind, applicationEvent)
     {
       // Burn the surroundings and apply the decay
       burnSurrounding(flamables[i], flamables, wind, applicationEvent.delta);
-      flamables[i].health -= applicationEvent.delta;
     }
   }
 }

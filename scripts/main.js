@@ -42,7 +42,8 @@ function init() {
     addModeButton("removeTree", "Chop Tree", 220, 0);
     addModeButton("addTree", "Add Tree", 330, 0);
     addModeButton("addHouse", "Add House", 440, 0);
-    addModeButton("getMap", "Get Map", 550, 0);
+    addModeButton("addFire", "Burn Things", 550, 0);
+    addModeButton("getMap", "Get Map", 660, 0);
     //addModeButton("tonyAbbot", "Prime Minister", 600, 0);
 
     // Add objects
@@ -66,6 +67,16 @@ function init() {
 }
 
 // Action Logic
+
+function makeFlamableHandler(flamable) {
+    return function(evt){
+	if(clickMode == "removeTree") {
+	    removeFlamable(flamable);
+	} else if (clickMode == "addFire") {
+	    flamable.burning += 100;
+	}
+    }
+}
 
 function removeFlamable(flamable){
     flamable.removeAllEventListeners();
@@ -117,11 +128,7 @@ function addTree(treebase) {
     circle.graphics.beginFill("green").drawCircle(0, 0, tree.radius);
     tree.addChild(circle);
     
-    tree.addEventListener("click", function(evt) {
-	if(clickMode == "removeTree") {
-	    removeFlamable(tree);
-	}
-    });
+    tree.addEventListener("click", makeFlamableHandler(tree));
 
     stage.addChild(tree);
     flamables[flamables.length] = tree;
@@ -207,7 +214,7 @@ function handleStageClick(evt) {
 function updateGraphics(flamable) {
     if(flamable.type == "tree") {
 	var circle = flamable.getChildAt(0);
-	var treeSize = flamable.radius - (1 - (100 / flamable.health)) * flamable.radius;
+	var treeSize = flamable.radius - (1 - (flamable.health / 100)) * flamable.radius;
 	circle.graphics.clear();
 	
 	var treeColour = "green";
@@ -223,19 +230,19 @@ function updateGraphics(flamable) {
 // Game Loop
 
 function updateBurning(flamable) {
-    if (flamable.burning > 100) {
-	flamable.health = flamable.health - flamable.burning / 100; // Consider, using log to suppress fire.
+    if (flamable.burning > 99) {
+	flamable.health -= flamable.burning / 100; // Consider, using log to suppress fire.
     }
 }
 
 function considerDying(flamable) {
     if(flamable.health < 0) {
-	
+	removeFlamable(flamable);
     }
 }
 
 function tick(event) {
-    spreadFire(flamables, wind, event);
+   // spreadFire(flamables, wind, event);
     
     for(i = 0; i < flamables.length; i++) {
 	var flamable = flamables[i];
