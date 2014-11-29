@@ -6,13 +6,17 @@ var zone2Burn = 1;
 var decayRate = 10;
 var burnHalfWidth = 30;
 
+function getDistance(point0, point1)
+{
+  return Math.sqrt(Math.pow(element.x - burner.x, 2) + Math.pow(element.y - burner.y, 2));
+}
+
 // Determine if an element is in the surrounding area of a burner
 function isInSurrounding(burner, element)
 {
   // Determine the distance between the burner and the burnee. If it's too close it'll burn
-  var distance = Math.sqrt((element.x - burner.x)^2 + (element.y - burner.y)^2);
-  if(distance > burner.radius * 2) return false;
-  return true;
+  var distance = getDistance(burner, element);
+  return distance < burner.radius * 2;
 }
 
 // Determine what'll be the damage done to the element being burnt
