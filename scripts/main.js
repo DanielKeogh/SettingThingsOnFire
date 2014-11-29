@@ -22,7 +22,7 @@ function init() {
 	canvas = document.getElementById("fireCanvas");
   cachedEmitter = makeParticleEmitter(0, 0);
 
-	// increaseDifficulty();
+	 //increaseDifficulty();
 
 	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
   housesAlive = difficulty.houseNumber;
@@ -177,7 +177,12 @@ function addModeButton(modeName, name, x, y, xSize) {
   buttonOutline.visible = false;
 
 	button.addEventListener("click", function (evt) {
-		clickMode = modeName;
+    if (clickMode != modeName) {
+      clickMode = modeName;
+    }
+    else {
+      clickMode = "noEvent";
+    }
     buttonOutline.visible = !buttonOutline.visible;
 	});
 
