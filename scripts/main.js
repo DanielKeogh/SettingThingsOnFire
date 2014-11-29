@@ -90,8 +90,9 @@ function removeFlamable(flamable){
 }
 
 function addHouse(housebase) {
-    var house = new createjs.Shape();
-    house.graphics.beginFill("blue").drawRect(0, 0, housebase.width, housebase.height);
+	var house = new createjs.Container();
+    var rectangle = new createjs.Shape();
+    rectangle.graphics.beginFill("blue").drawRect(0, 0, housebase.width, housebase.height);
 
     house.type = "house";
     house.x = housebase.x;
@@ -109,6 +110,8 @@ function addHouse(housebase) {
 	    removeFlamable(house);
 	}
     });
+	
+	house.addChild(rectangle);
    
     stage.addChild(house);
     flamables[flamables.length] = house;
@@ -216,17 +219,28 @@ function handleStageClick(evt) {
 
 function updateGraphics(flamable) {
     if(flamable.type == "tree") {
-	var circle = flamable.getChildAt(0);
-	var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
-	circle.graphics.clear();
-	
-	var treeColour = "green";
-	if(flamable.burning > 99) {
-	    treeColour = "red";
-	}
+		var circle = flamable.getChildAt(0);
+		var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
+		circle.graphics.clear();
+		
+		var treeColour = "green";
+		if(flamable.burning > 99) {
+			treeColour = "red";
+		}
 
-	circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
+		circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
     }
+	else if (flamable.type == "house") {
+		var rectangle = flamable.getChildAt(0);
+		rectangle.graphics.clear();
+	
+		var houseColour = "blue";
+		if(flamable.burning > 99) {
+			houseColour = "brown";
+		}
+
+		rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
+	}	
 }
 
 
