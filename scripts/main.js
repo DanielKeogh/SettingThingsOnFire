@@ -24,7 +24,6 @@ var clickMode = "dropFireMan";
 
 var particleImage;
 
-var funds = 5000;
 
 function loadAssets() {
     particleImage = new Image();
@@ -327,7 +326,7 @@ function considerDying(flamable) {
     if(flamable.health < 0) {		
 	
 		if(flamable.type == "house"){
-			funds -= 1000;
+			decreaseFunds(1000);
 		}
 		else{			
 			removeFlamable(flamable);
