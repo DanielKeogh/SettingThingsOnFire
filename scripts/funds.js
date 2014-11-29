@@ -1,12 +1,8 @@
 
-var funds = 10000;
-var fireManCost = 600;
-var cutTreeCost = 400;
-
 function decreaseFunds(amountToDecrease, forceNegative) {
 	var success = false
-	if (funds - amountToDecrease > 0 || forceNegative) {
-		funds -= amountToDecrease;
+	if (player.funds - amountToDecrease > 0 || forceNegative) {
+		player.funds -= amountToDecrease;
 		success = true;
 	}
 	else {
@@ -16,6 +12,6 @@ function decreaseFunds(amountToDecrease, forceNegative) {
 }
 
 function increaseFunds(amountToIncrease) {
-	funds += amountToIncrease;
+	player.funds += amountToIncrease;
 }
 
