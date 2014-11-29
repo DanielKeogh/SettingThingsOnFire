@@ -18,7 +18,7 @@ AE- Map gen randomises wind direction
 - Map generator smarter
 - Fix flames on tree
 - Adjust balancing of waterbombs etc
-- More starting fires - difficulty
+// More starting fires - difficulty
 //- Adjustable starting fire number
 - Grouping of starting fires
 - Aggressive 

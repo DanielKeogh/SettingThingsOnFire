@@ -11,7 +11,9 @@ function increaseDifficulty() {
   player.roundNumber++;
   difficulty.houseNumber++;
   difficulty.treeNumber += 50;
+  difficulty.startingFireCount = (player.roundNumber * 2) - 1;
   costs.fireManCost += 25;
   costs.cutTreeCost += 10;
   costs.waterBombCost += 100;
+  
 }
