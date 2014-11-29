@@ -258,7 +258,7 @@ function getStartTheFire(fires)
     return function()
     {
 	var firelen = fires;
-	for(int i = 0; i < firelen; i++)
+	for(var i = 0; i < firelen; i++)
 	{
 	    if(flamables[i].type == "tree")
 	    {
@@ -277,31 +277,34 @@ function getStartTheFire(fires)
 
 function updateGraphics(flamable) {
     if(flamable.type == "tree") {
-    var circle = flamable.getChildAt(0);
-    var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
-    circle.graphics.clear();
-    
-    var treeColour = "green";
-    if(flamable.burning > 99) {
-      treeColour = "red";
+	var circle = flamable.getChildAt(0);
+	var treeSize = flamable.radius - (1 - (flamable.health / flamable.startingHealth)) * flamable.radius;
+	circle.graphics.clear();
+	
+	var treeColour = "";
+	if(flamable.burning > 99) {
+	    treeColour = "red";
+	}
+	else {
+	    treeColour = rgb(Math.round(256 * flamable.burning / 100), 265, 0);
+	}
+	
+	circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
     }
-
-    circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
-    }
-  else if (flamable.type == "house") {
-    var rectangle = flamable.getChildAt(0);
-    rectangle.graphics.clear();
-  
-    var houseColour = "blue";
-    if(flamable.burning > 99) {
-      houseColour = "brown";
-    }
-    if(flamable.health <= 0) {
-      houseColour = "black";
-    }
-    
-    rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
-  }  
+    else if (flamable.type == "house") {
+	var rectangle = flamable.getChildAt(0);
+	rectangle.graphics.clear();
+	
+	var houseColour = "blue";
+	if(flamable.burning > 99) {
+	    houseColour = "brown";
+	}
+	if(flamable.health <= 0) {
+	    houseColour = "black";
+	}
+	
+	rectangle.graphics.beginFill(houseColour).drawRect(0, 0, flamable.width, flamable.height);
+    }  
 }
 
 function makeParticleEmitter(x, y) {
@@ -420,9 +423,9 @@ function toggleRoll() {
 
 var countdown;
 function performCountdown(seconds, action){
-    countdown = new createjs.Text(seconds, "bold 22px Arial", "black");
-    countdown.y = 200; //Dstage.canvas.height / 2;
-    countdown.x = 200; stage.canvas.width / 2;
+    countdown = new createjs.Text(seconds, "bold 70px Arial", "black");
+    countdown.y = stage.canvas.height / 2;
+    countdown.x = stage.canvas.width / 2;
     countdown.seconds = seconds;
     countdown.doAction = action;
     stage.addChild(countdown);
