@@ -1,12 +1,12 @@
 things to do
 
-- End of round conditions
+//- End of round conditions
   || Houses Alive == 0
   || Ignition count == 0 
-- Lose conditions
+//- Lose conditions
   || House Alive == 0
   || Player.funds < 0 && Ignition count == 0 
-- Progress To next round
+//- Progress To next round
   && Houses Alive > 0
   && Ignition count == 0
   && Player.funds >= 0

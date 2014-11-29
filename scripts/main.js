@@ -171,9 +171,14 @@ function addModeButton(modeName, name, x, y, xSize) {
 
 	var buttonShape = new createjs.Shape();
 	buttonShape.graphics.beginFill("pink").drawRect(0, 0, xSize, 30);
+  
+  var buttonOutline = new createjs.Shape();
+	buttonOutline.graphics.beginStroke("red").drawRect(0, 0, xSize, 30);
+  buttonOutline.visible = false;
 
 	button.addEventListener("click", function (evt) {
 		clickMode = modeName;
+    buttonOutline.visible = !buttonOutline.visible;
 	});
 
 	var text = new createjs.Text(name, "bold 15px Arial", "red");
@@ -181,6 +186,7 @@ function addModeButton(modeName, name, x, y, xSize) {
 	text.y = 5;
 
 	button.addChild(buttonShape);
+  button.addChild(buttonOutline);
 	button.addChild(text);
 	stage.addChild(button);
 }
