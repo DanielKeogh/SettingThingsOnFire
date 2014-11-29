@@ -1,6 +1,5 @@
 function nextRoundProtocol()
 {
-  increaseFunds(housesAlive * costs.houseDestructionCost);
   increaseDifficulty();
   init();
 }
