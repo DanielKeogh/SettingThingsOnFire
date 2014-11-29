@@ -3,11 +3,13 @@ var bombArc;
 
 function handleDropWaterClick(x, y, flamables)
 {
-  for(var i = 0; i < flamables.length; ++ i)
-  {
-    if(getDistance({x: x, y: y}, flamables[i]) < waterBombRadius)
+  if (decreaseFunds(difficulty.waterBombCost)) {
+    for(var i = 0; i < flamables.length; ++ i)
     {
-      flamables[i].burning = Math.max(flamables[i].burning - 150, 0);
+      if(getDistance({x: x, y: y}, flamables[i]) < waterBombRadius)
+      {
+        flamables[i].burning = Math.max(flamables[i].burning - 150, 0);
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 // Difficulty configuration
-var surroundingPenalty = 0.006;
+var surroundingPenalty = 0.03;
 var zone0Burn = 0.005;
 var zone1Burn = 0.003;
 var zone2Burn = 0.002;
@@ -66,13 +66,13 @@ function burnSurrounding(burner, elements, wind, delta)
       case -1:
         break;
       case 0:
-        element.burning += zone0Burn * delta;
+        addBurn(element, zone0Burn, delta);
         break;
       case 1:
-        element.burning += zone1Burn * delta;
+        addBurn(element, zone1Burn, delta);
         break;
       case 2:
-        element.burning += zone2Burn * delta;
+        addBurn(element, zone2Burn, delta);
         break;
       default:
         break;
@@ -80,23 +80,29 @@ function burnSurrounding(burner, elements, wind, delta)
  
     if(isInSurrounding(burner, element))
     {
-      element.burning += delta * surroundingPenalty;
+	addBurn(element, surroundingPenalty, delta);
     }
   }
+}
+
+function addBurn(element, amount, delta)
+{
+    element.burning += amount * delta / element.numberOfBurnsThisRound;
+    element.numberOfBurnsThisRound++;
 }
 
 // Performs the spreading of the fire when a whole bunch of trees are burning
 function spreadFire(flamables, wind, applicationEvent)
 {
-  for(var i = 0; i < flamables.length; ++ i)
-  {
-    // Determine the set trees that are burning
-    if(flamables[i].type == "tree" &&
-       flamables[i].burning >= 100 &&
-       flamables[i].health > 0)
+    for(var i = 0; i < flamables.length; ++ i)
     {
-      // Burn the surroundings and apply the decay
-      burnSurrounding(flamables[i], flamables, wind, applicationEvent.delta);
+	// Determine the set trees that are burning
+	if(flamables[i].type == "tree" &&
+	   flamables[i].burning >= 100 &&
+	   flamables[i].health > 0)
+	{
+	    // Burn the surroundings and apply the decay
+	    burnSurrounding(flamables[i], flamables, wind, applicationEvent.delta);
+	}
     }
-  }
 }
