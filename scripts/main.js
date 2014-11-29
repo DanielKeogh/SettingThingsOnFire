@@ -19,12 +19,11 @@ function loadAssets() {
 }
 
 function init() {
-	canvas = document.getElementById("fireCanvas");
   cachedEmitter = makeParticleEmitter(0, 0);
 
 	 //increaseDifficulty();
 
-	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
+	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, stage.canvas.width, stage.canvas.height);
   housesAlive = difficulty.houseNumber;
   burningTrees = difficulty.startingFireCount;
 
@@ -416,8 +415,6 @@ function tick(event) {
 
 function gameTick(event)
 {
-  console.log("gameTick");
-
   if(housesAlive == 0 || burningTrees == 0)
   {
     endOfRound();
