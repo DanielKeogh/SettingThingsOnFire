@@ -5,7 +5,15 @@ function welcomeTick()
 
 function welcome()
 {
-  stage = new createjs.Stage("fireCanvas");
+  if(stage != null)
+  {
+    stage.clear();
+  }
+  else
+  {
+    stage = new createjs.Stage("fireCanvas");
+  }
+
   var rectangle = new createjs.Shape();
   rectangle.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
   stage.addChild(rectangle);

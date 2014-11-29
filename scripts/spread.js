@@ -1,8 +1,8 @@
 // Difficulty configuration
-var surroundingPenalty = 0.03;
-var zone0Burn = 0.005;
-var zone1Burn = 0.003;
-var zone2Burn = 0.002;
+var surroundingPenalty = 0.1;
+var zone0Burn = 0.015;
+var zone1Burn = 0.009;
+var zone2Burn = 0.006;
 var radiusFactor = 3;
 var burnHalfWidth = 15;
 
@@ -87,7 +87,7 @@ function burnSurrounding(burner, elements, wind, delta)
 
 function addBurn(element, amount, delta)
 {
-    element.burning += amount * delta / element.numberOfBurnsThisRound;
+    element.burning += amount * delta / (element.numberOfBurnsThisRound * 3);
     element.numberOfBurnsThisRound++;
 }
 

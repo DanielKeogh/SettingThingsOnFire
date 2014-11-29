@@ -36,7 +36,7 @@ function init() {
 
 	 //increaseDifficulty();
 
-	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
+	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, stage.canvas.width, stage.canvas.height);
   housesAlive = difficulty.houseNumber;
   burningTrees = difficulty.startingFireCount;
 
