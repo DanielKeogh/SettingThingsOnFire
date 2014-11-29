@@ -70,7 +70,7 @@ function generateMap(housecount, treecount, stagewidth, stageheight) {
 
 
 	for (var i = 0; i < treecount; i++) {
-		var randradius = Math.round(Math.random() * 13 + 4);
+		var randradius = Math.round(Math.random() * 13 + 4 + difficulty.treeSize);
 		var randx = Math.random() * (stage.canvas.width - randradius * 2) + randradius;
 		var randy = Math.random() * (stage.canvas.height - randradius * 2 - 30) + 30 + randradius;
 

@@ -104,7 +104,7 @@ function initializeCanvas()
 	gameBackground = new createjs.Shape();
 	gameBackground.x = 0;
 	gameBackground.y = 0;
-	gameBackground.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+	gameBackground.graphics.beginFill("#454400").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
 
 	createActionButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0, 200);
 	createActionButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 0, 200);

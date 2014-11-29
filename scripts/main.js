@@ -85,7 +85,7 @@ function init() {
 
 function makeFlamableHandler(flamable) {
 	return function (evt) {
-		if (clickMode == "removeTree") {
+		if (clickMode == "removeTree" && flamable.burning < 99) {
 			removeTree(flamable);
 		} else if (clickMode == "addFire") {
 			flamable.burning += 100;
@@ -396,9 +396,13 @@ function gameTick(event)
 
 	spreadFire(flamables, wind, event);
 
-	for (var i = 0; i < flamables.length; i++) {
-		var flamable = flamables[i];
-		flamable.numberOfBurnsThisRound = 1;
+  for(var i = 0; i < flamables.length; i++)
+  {
+    flamables[i].numberOfBurnsThisRound = 1;
+  }
+
+  for (var i = 0; i < flamables.length; i++) {
+    var flamable = flamables[i];
 
 		if (roll) {
 			flamable.x = (flamable.x + (event.delta) / 1000 * 100) % stage.canvas.width;

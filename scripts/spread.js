@@ -1,13 +1,29 @@
 // Difficulty configuration
 var surroundingPenalty = 0.1;
-var zone0Burn = 0.015;
-var zone1Burn = 0.009;
-var zone2Burn = 0.006;
+var zone0Burn = 0.1;
+var zone1Burn = 0.05;
+var zone2Burn = 0.01;
 var radiusFactor = 3;
 var burnHalfWidth = 15;
 
-function getDistance(point0, point1)
+
+function getPoint(element)
 {
+  if(element.type == "house")
+  {
+    return {x: element.x + element.width / 2, y: element.y + element.height / 2};
+  }
+  else
+  {
+    return element;
+  }
+}
+
+function getDistance(first, second)
+{
+  var point0 = getPoint(first);
+  var point1 = getPoint(second);
+
   return Math.sqrt(Math.pow(point0.x - point1.x, 2) + Math.pow(point0.y - point1.y, 2));
 }
 
@@ -16,7 +32,18 @@ function isInSurrounding(burner, element)
 {
   // Determine the distance between the burner and the burnee. If it's too close it'll burn
   var distance = getDistance(burner, element);
-  return distance < burner.radius * radiusFactor;
+
+  var elementTypeRadius = 0;
+  if(element.type == "tree")
+  {
+    elementTypeRadius = element.radius;
+  }
+  else if (element.type == "house")
+  {
+    elementTypeRadius = (element.width + element.height) / 2;
+  }
+
+  return distance < burner.radius * radiusFactor + elementTypeRadius;
 }
 
 // Determine what'll be the damage done to the element being burnt
@@ -59,7 +86,7 @@ function burnSurrounding(burner, elements, wind, delta)
     var element = elements[i];
     if(element == burner) continue;
 
-    var zone = determineZone(burner, elements[i], wind);
+    var zone = -1; determineZone(burner, elements[i], wind);
 
     switch(zone)
     {
@@ -94,7 +121,7 @@ function addBurn(element, amount, delta)
       return;
     }
   }
-  element.burning += amount * delta / (element.numberOfBurnsThisRound * 3);
+  element.burning += amount * delta / (element.numberOfBurnsThisRound * 6);
   element.numberOfBurnsThisRound++;
 }
 
