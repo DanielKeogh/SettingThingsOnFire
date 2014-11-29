@@ -1,11 +1,5 @@
 //Map Constants & Vars
-var wind = {
-	type : "wind",
-	speed : 200,
-	direction : 270
-};
 var fireManSize = 5;
-var fireManRange = 35;
 var fps = 60;
 var stage;
 var canvas;
@@ -191,8 +185,8 @@ function handleDropFireMan(x, y) {
 		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
 		fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize / 2);
 		var arcShape = new createjs.Shape();
-		arcShape.graphics.beginStroke("rgba(0, 0, 240, 1)").arc(0, 0, fireManRange, 0, Math.PI * 2);
-		arcShape.graphics.beginFill("rgba(0, 0, 240, 0.3)").drawCircle(0, 0, fireManRange);
+		arcShape.graphics.beginStroke("rgba(0, 0, 240, 1)").arc(0, 0, difficulty.fireManRange, 0, Math.PI * 2);
+		arcShape.graphics.beginFill("rgba(0, 0, 240, 0.3)").drawCircle(0, 0, difficulty.fireManRange);
 		container.addChild(arcShape);
 		container.addChild(fireman);
 		container.x = x;
