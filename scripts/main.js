@@ -46,6 +46,9 @@ function init() {
     background.graphics.beginFill("black").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
     stage.addChild(background);
     
+    // Add background   
+    stage.addChild(createBackground());
+    
     // Setup controls
 
     addModeButton("dropFireMan", "Firemen", 0, 0);
@@ -75,6 +78,14 @@ function init() {
 
     createjs.Ticker.on("tick", tick);
     createjs.Ticker.setFPS(60);
+}
+
+function createBackground() {
+	var background = new createjs.Shape();
+    background.x = 0;
+    background.y = 0;
+    background.graphics.beginFill("#663300").drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+	return background;
 }
 
 // Action Logic
@@ -148,7 +159,7 @@ function addTree(treebase) {
     tree.type = "tree";
 
     var circle = new createjs.Shape();
-    circle.graphics.beginFill("green").drawCircle(0, 0, tree.radius);
+    circle.graphics.beginFill("#335500").drawCircle(0, 0, tree.radius);
     tree.addChild(circle);
     
     tree.addEventListener("click", makeFlamableHandler(tree));
@@ -183,6 +194,7 @@ function handleDropFireMan(x, y) {
 	if (decreaseFunds(fireManCost)) {
 		var fireman = new createjs.Shape();
 		fireman.graphics.beginFill("yellow").drawCircle(0, 0, fireManSize);
+		fireman.graphics.beginFill("red").drawCircle(0, 0, fireManSize/2);
 		fireman.x = x;
 		fireman.y = y;
 		
