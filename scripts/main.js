@@ -11,6 +11,7 @@ var fundText;
 var burningTrees;
 var housesAlive;
 var roundText;
+var currentContext;
 
 function loadAssets() {
 	particleImage = new Image();
@@ -21,7 +22,7 @@ function init() {
 	canvas = document.getElementById("fireCanvas");
   cachedEmitter = makeParticleEmitter(0, 0);
 
-	// increaseDifficulty();
+	 //increaseDifficulty();
 
 	mapInit = generateMap(difficulty.houseNumber, difficulty.treeNumber, canvas.width, canvas.height);
   housesAlive = difficulty.houseNumber;
@@ -69,11 +70,8 @@ function init() {
 	performCountdown(player.preparationTime, getStartTheFire(difficulty.startingFireCount));
 
 	stage.on("click", handleStageClick);
+  currentContext = "game";
 	stage.update();
-
-	createjs.Ticker.on("tick", tick);
-	createjs.Ticker.setFPS(fps);
-  createjs.Ticker.setPaused(false);
 }
 
 function createBackground() {
@@ -179,7 +177,12 @@ function addModeButton(modeName, name, x, y, xSize) {
   buttonOutline.visible = false;
 
 	button.addEventListener("click", function (evt) {
-		clickMode = modeName;
+    if (clickMode != modeName) {
+      clickMode = modeName;
+    }
+    else {
+      clickMode = "noEvent";
+    }
     buttonOutline.visible = !buttonOutline.visible;
 	});
 
@@ -400,10 +403,20 @@ function considerDying(flamable) {
 }
 
 function tick(event) {
-  if(event.paused)
+  switch(currentContext)
   {
-    return;
+    case "welcome":
+      welcomeTick();
+      break;
+    case "game":
+      gameTick(event);
+      break;
   }
+}
+
+function gameTick(event)
+{
+  console.log("gameTick");
 
   if(housesAlive == 0 || burningTrees == 0)
   {
