@@ -44,9 +44,9 @@ function init() {
 	stage.addChild(createBackground());
 
 	// Setup controls
-	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 0, 200);
-	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 0, 200);
-	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 0, 200);
+	addModeButton("dropFireMan", "Firemen: " + costs.fireManCost, 0, 7, 200);
+	addModeButton("dropWater", "Water Bomb: " + costs.waterBombCost, 225, 7, 200);
+	addModeButton("removeTree", "Chop Tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size", 450, 7, 200);
   
   if (player.debug) {
     var xLoc = stage.canvas.width - 100;
