@@ -91,18 +91,21 @@ function makeFlamableHandler(flamable) {
 }
 
 function removeTree(flamable) {
-	if (decreaseFunds(difficulty.cutTreeCost)) {
-		removeFlamable(flamable);
+	if (decreaseFunds((flamable.radius * difficulty.cutTreeCostFactor) + difficulty.cutTreeCost)) {
+		removeFlamable(flamable, true);
 	}
 }
 
-function removeFlamable(flamable) {
+function removeFlamable(flamable, removeFromStage) {
 	flamable.removeAllEventListeners();
 	var index = flamables.indexOf(flamable);
 	if (index > -1) {
 		flamables.splice(index, 1);
 	}
-	stage.removeChild(flamable);
+  
+  if (removeFromStage) {
+    stage.removeChild(flamable);
+  }
 }
 
 function addFlamable(base) {
@@ -129,11 +132,11 @@ function addHouse(housebase) {
 	var rectangle = new createjs.Shape();
 	rectangle.graphics.beginFill("blue").drawRect(0, 0, housebase.width, housebase.height);
 
-	house.addEventListener("click", function (evt) {
-		if (clickMode == "removeTree") {
-			removeFlamable(house);
-		}
-	});
+	//house.addEventListener("click", function (evt) {
+	//	if (clickMode == "removeTree") {
+	//		removeFlamable(house, true);
+	//	}
+	//});
 
 	house.addChild(rectangle);
 
@@ -361,8 +364,9 @@ function considerDying(flamable) {
 	if (!flamable.died && flamable.health < 0) {
 		if (flamable.type == "house") {
 			flamable.died = decreaseFunds(1000, true);
+      removeFlamable(flamable, false);
 		} else {
-			removeFlamable(flamable);
+			removeFlamable(flamable, true);
 		}
 	}
 }
