@@ -34,10 +34,6 @@ function loadAssets() {
 function init() {
     var canvas = document.getElementById("fireCanvas");
     
-    //Menu goes here:
-    
-    //stage = new createjs.Stage(canvas);
-    
     mapInit = generateMap(4, 300, canvas.width, canvas.height);
     
     // Add background   
