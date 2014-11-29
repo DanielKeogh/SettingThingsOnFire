@@ -17,6 +17,8 @@ var mapInit = [
  
 var stage;
 
+var canvas;
+
 var flamables = [];
 
 var firemen = [];
@@ -32,7 +34,7 @@ function loadAssets() {
 }
 
 function init() {
-    var canvas = document.getElementById("fireCanvas");
+    canvas = document.getElementById("fireCanvas");
     
     //Menu goes here:
     
@@ -177,7 +179,7 @@ function addModeButton(modeName, name, x, y) {
     buttonShape.graphics.beginFill("pink").drawRect(0, 0, 100, 30);
 
     button.addEventListener("click", function(evt) {
-  clickMode = modeName;
+      clickMode = modeName;
     });
 
     var text = new createjs.Text(name, "bold 15px Arial", "red");
@@ -256,6 +258,9 @@ function handleStageClick(evt) {
 
       mapLog = mapLog.concat("];");
       console.log(mapLog);
+      break;
+    case "dropWater":
+      handleDropWaterClick(x, y, flamables);
       break;
   }
 }
@@ -386,6 +391,8 @@ function tick(event) {
   considerDying(flamable, event);
     }    
     
+    stage.removeChild(bombArc);
+    if(clickMode == "dropWater") handleDropWaterHover();
     stage.update(event);
 }
 
