@@ -7,7 +7,7 @@
 var wind = {type: "wind", speed: 200, direction: 270};
 
 var fireManSize = 5;
-var fireManRange = 40;
+var fireManRange = 35;
 
 var mapInit = [
     //{type: "tree", x: 40, y: 40, radius: 15, health: 100, burning: 0},
