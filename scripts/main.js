@@ -316,6 +316,11 @@ function updateBurning(flamable) {
 function considerDying(flamable) {
     if(flamable.health < 0) {
 	removeFlamable(flamable);
+	
+	if(flamable.type == "house")
+	{
+	    funds -= 1000;
+	}
     }
 }
 
