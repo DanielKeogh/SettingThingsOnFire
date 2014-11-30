@@ -72,6 +72,7 @@ function initializeCanvas()
 
   playButton.on("click", function(evt){
     stage.clear();
+    player.funds = initialFunds;
     init();
   });
 
