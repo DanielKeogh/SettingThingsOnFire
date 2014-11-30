@@ -190,7 +190,7 @@ function handleDirectFiremen(x, y) {
 }
 
 function handleStageClick(evt) {
-	if (evt.stageY < 30) {
+	if (evt.stageY < 40) {
 		return;
 	}
 	var x = evt.stageX;
@@ -393,11 +393,17 @@ function tick(event) {
   }
 }
 
+
+var youSuckText = null;
+
 function gameTick(event)
 {
   if(housesAlive == 0 || burningTrees == 0)
   {
-    endOfRound();
+    if(youSuckText == null)
+    {
+      endOfRound();
+    }
   }
 
 	spreadFire(flamables, wind, event);

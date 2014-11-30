@@ -91,12 +91,16 @@ function initializeCanvas()
   playButton.x = titleBounds.width / 2 - buttonBounds.width / 2;
   playButton.y = titleBounds.height + 30;
 
+  var gameDescription = new createjs.Text("Coordinate fire fighters, water drops,\nand tactical tree cutting.\nProtect your fellow Australians!", "bold 22px Arial", "yellow");
+  gameDescription.y = 200;
+
   titleContainer = new createjs.Container();
   titleContainer.height = titleBounds.height + 30 + buttonBounds.height;
   titleContainer.width = titleBounds.width;
 
   titleContainer.addChild(title);
   titleContainer.addChild(playButton);
+  titleContainer.addChild(gameDescription);
 
   titleContainer.x = stage.canvas.width / 2 - titleContainer.width / 2;
   titleContainer.y = stage.canvas.height / 2 - titleContainer.width / 2;
