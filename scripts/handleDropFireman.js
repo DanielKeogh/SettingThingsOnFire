@@ -22,6 +22,14 @@ function handleDropFireMan(x, y) {
 		container.addChild(fireman);
 		container.x = x;
 		container.y = y;
+    
+    container.destx = x;
+    container.desty = y;
+
+    container.addEventListener("click", function () {
+      selectedfiremen = [container];
+      clickMode = "directFiremen";
+    });
 
 		firemen[firemen.length] = container;
 		stage.addChild(container);
