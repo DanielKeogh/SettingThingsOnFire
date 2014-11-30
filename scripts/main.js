@@ -6,6 +6,7 @@ var canvas;
 var flamables = [];
 var buttons = [];
 var firemen = [];
+var selectedfireman = [];
 var clickMode = "noEvent";
 var particleImage;
 var burningTrees;
@@ -71,7 +72,7 @@ function init() {
         break;
       case "removeTree":
         newText = "Chop tree: " + costs.cutTreeCost + " + " + costs.cutTreeCostFactor + "* size";
-        break;
+        break; 
     }
     actionButtons[i].contentText.text = newText;
   }
@@ -178,6 +179,14 @@ function addTree(treebase) {
 	flamables[flamables.length] = tree;
 }
 
+function handleDirectFiremen(x, y) {
+  for(var i = 0; i < selectedfiremen.length; i++) {
+    console.log(selectedfiremen);
+    selectedfiremen[i].destx = x;
+    selectedfiremen[i].desty = y;
+  }
+}
+
 function handleStageClick(evt) {
 	if (evt.stageY < 30) {
 		return;
@@ -224,7 +233,10 @@ function handleStageClick(evt) {
 	case "dropWater":
 		handleDropWaterClick(x, y, flamables);
 		break;
-	}
+  case "directFiremen":
+      handleDirectFiremen(x, y);
+    break;
+  }
 }
 
 // Game Logic
@@ -387,6 +399,23 @@ function gameTick(event)
   }
 
 	spreadFire(flamables, wind, event);
+
+  var fireManSpeed = 0.06;
+  for(var i = 0; i < firemen.length; i++)
+  {
+    var fireman = firemen[i];
+    if(Math.round(fireman.x - fireman.destx) != 0 || Math.round(fireman.y - fireman.desty))
+    {
+      var targetX = fireman.destx - fireman.x;
+      var targetY = fireman.desty - fireman.y;
+      var angle = Math.atan2(targetY,targetX);
+      var dx = Math.cos(angle) * fireManSpeed;
+      var dy = Math.sin(angle) * fireManSpeed;
+ 
+      fireman.x += dx * event.delta;
+      fireman.y += dy * event.delta;
+    }
+  }
 
   for(var i = 0; i < flamables.length; i++)
   {
