@@ -12,6 +12,8 @@ var particleImage;
 var burningTrees;
 var housesAlive;
 var currentContext;
+var fireManSpeed = 0.06;
+var fireManQuench = 0.03;
 
 function loadAssets() {
 	particleImage = new Image();
@@ -400,7 +402,6 @@ function gameTick(event)
 
 	spreadFire(flamables, wind, event);
 
-  var fireManSpeed = 0.06;
   for(var i = 0; i < firemen.length; i++)
   {
     var fireman = firemen[i];
@@ -424,6 +425,14 @@ function gameTick(event)
 
   for (var i = 0; i < flamables.length; i++) {
     var flamable = flamables[i];
+    
+    for(var j = 0; j < firemen.length; j++)
+    {
+      if(flamable.type == "tree" && getDistance(firemen[j], flamable) < fireManRange + flamable.radius)
+      {
+        flamable.burning = Math.max(0, flamable.burning - fireManQuench * event.delta);
+      }
+    }
 
 		if (roll) {
 			flamable.x = (flamable.x + (event.delta) / 1000 * 100) % stage.canvas.width;

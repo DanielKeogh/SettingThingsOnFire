@@ -114,13 +114,6 @@ function burnSurrounding(burner, elements, wind, delta)
 
 function addBurn(element, amount, delta)
 {
-  for(var i = 0; i < firemen.length; i++)
-  {
-    if(element.type == "tree" && getDistance(firemen[i], element) < fireManRange + element.radius)
-    {
-      return;
-    }
-  }
   element.burning += amount * delta / (element.numberOfBurnsThisRound * 6);
   element.numberOfBurnsThisRound++;
 }
