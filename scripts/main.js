@@ -169,8 +169,10 @@ function addTree(treebase) {
 	tree.type = "tree";
 
 	var circle = new createjs.Shape();
-	circle.graphics.beginFill("#335500").drawCircle(0, 0, tree.radius);
+	circle.graphics.drawCircle(0, 0, 1);
 	tree.addChild(circle);
+
+  attachImage(tree, regularTreeBitmap, tree.radius);
 
 	tree.addEventListener("click", makeFlamableHandler(tree));
 
@@ -255,11 +257,16 @@ function updateGraphics(flamable) {
     var treeColour = "";
     if (flamable.burning > 99) {
       treeColour = "red";
+      attachImage(flamable, ignitedTreeBitmap, treeSize);
     } else {
       treeColour = rgb(Math.round(256 * flamable.burning / 100), 220, 0);
+      if(flamable.burning > 0)
+      {
+        attachImage(flamable, burningTreeBitmap, treeSize);
+      }
     }
 
-    circle.graphics.beginFill(treeColour).drawCircle(0, 0, treeSize);
+    circle.graphics.beginFill(treeColour).drawCircle(0, 0, 1);
   } else if (flamable.type == "house") {
     var rectangle = flamable.getChildAt(0);
     rectangle.graphics.clear();

@@ -4,6 +4,20 @@ var actionButtons = [];
 var gameBackground;
 var fundText;
 var roundText;
+var loadedImages = 0;
+var regularTreeBitmap;
+var burningTreeBitmap;
+var ignitedTreeBitmap;
+
+function imageLoaded()
+{
+  console.log("loaded");
+  ++loadedImages;
+  if(loadedImages >= 3)
+  {
+    welcome();
+  }
+}
 
 function changeVisibilityOfButtonOutlines() {
   for (i = 0; i < actionButtons.length; i++) {
@@ -13,8 +27,8 @@ function changeVisibilityOfButtonOutlines() {
 		}
 }
 
-function createActionButton(modeName, x, y, xSize) {
-	var button = new createjs.Container();
+function createActionButton(modeName, x, y, xSize) {	
+  var button = new createjs.Container();
 	button.x = x;
 	button.y = y;
   button.name = modeName;
@@ -51,6 +65,19 @@ function createActionButton(modeName, x, y, xSize) {
 
 function initializeCanvas()
 {
+  // Start loading images
+  regularTreeBitmap = new Image();
+  regularTreeBitmap.onload = imageLoaded;
+  regularTreeBitmap.src = "images/treeAbove.png";
+
+  burningTreeBitmap = new Image();
+  burningTreeBitmap.onload = imageLoaded;
+  burningTreeBitmap.src = "images/treeAboveBurning.png";
+
+  ignitedTreeBitmap = new Image();
+  ignitedTreeBitmap.onload = imageLoaded;
+  ignitedTreeBitmap.src = "images/treeAboveIgnited.png";
+
   stage = new createjs.Stage("fireCanvas");
 
   /***********************************/
@@ -139,6 +166,4 @@ function initializeCanvas()
   /***********************************/
   createjs.Ticker.setFPS(fps);
   createjs.Ticker.on("tick", tick);
-
-  welcome();
 }
